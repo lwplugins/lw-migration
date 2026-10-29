@@ -1,0 +1,309 @@
+// Backups list: chips and search, the day groups and their rows (the row's
+// tags, where-it-lives tiles and ⋯). Tokens: _tokens.scss.
+
+@use "tokens" as *;
+
+.lw-bk-tools {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: $gap-md;
+}
+
+.lw-bk-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.lw-bk-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 5px 14px;
+	border: 1px solid $stroke;
+	border-radius: 99px;
+	background: $surface;
+	color: $text;
+	font: inherit;
+	font-size: 13px;
+	cursor: pointer;
+
+	&:hover {
+		border-color: $brand;
+	}
+
+	&__count {
+		color: $muted;
+		font-variant-numeric: tabular-nums;
+	}
+
+	&[aria-pressed="true"] {
+		border-color: $text;
+		background: $text;
+		color: $surface;
+
+		.lw-bk-chip__count {
+			color: inherit;
+			opacity: 0.75;
+		}
+	}
+}
+
+.lw-bk-search {
+	position: relative;
+	margin-left: auto;
+
+	svg {
+		position: absolute;
+		top: 50%;
+		left: 8px;
+		color: $muted;
+		translate: 0 -50%;
+		pointer-events: none;
+	}
+
+	input[type="search"] {
+		width: 280px;
+		max-width: 100%;
+		min-height: 36px;
+		padding: 4px 10px 4px 34px;
+		border: 1px solid $stroke;
+		border-radius: $radius;
+		background: $surface;
+		font-size: 13px;
+	}
+}
+
+.lw-bk-list {
+	min-width: 0;
+	margin: 0;
+	overflow: hidden;
+	border: 1px solid $stroke-weak;
+	border-radius: $radius-lg;
+	background: $surface;
+
+	&__empty {
+		padding: $gap-xl;
+		color: $muted;
+	}
+
+	&__skel {
+		padding: $gap-lg 20px;
+	}
+}
+
+.lw-bk-day {
+	&__title {
+		margin: 0;
+		padding: 10px $gap-lg 6px;
+		border-top: 1px solid $stroke-weak;
+		background: color-mix(in srgb, #{$track} 60%, #{$surface});
+		color: $muted;
+		font-size: 12px;
+		font-weight: 600;
+	}
+
+	&:first-child &__title {
+		border-top: 0;
+	}
+
+	&__rows {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+}
+
+.lw-bk-row {
+	position: relative;
+	display: grid;
+	// Fixed tracks so every row of the list lines up: the places column fits
+	// three tiles (this server and two destinations), a fourth wraps in it.
+	grid-template-columns: minmax(0, 1fr) 104px 84px 90px 36px;
+	gap: $gap-md;
+	align-items: center;
+	margin: 0;
+	padding: 10px $gap-lg;
+	border-top: 1px solid $stroke-weak;
+
+	&:hover {
+		background: $row-hover;
+	}
+
+	&.is-chosen {
+		background: $brand-soft;
+		box-shadow: inset 3px 0 0 $brand;
+	}
+
+	// The whole row chooses the backup; the tiles and ⋯ stay on top.
+	&__pick {
+		min-width: 0;
+		padding: 0;
+		border: 0;
+		background: none;
+		color: inherit;
+		font: inherit;
+		text-align: left;
+		cursor: pointer;
+
+		&::after {
+			content: "";
+			position: absolute;
+			inset: 0;
+		}
+
+		&:focus-visible {
+			outline: none;
+
+			&::after {
+				outline: 2px solid $brand;
+				outline-offset: -2px;
+			}
+		}
+	}
+
+	&__name {
+		display: block;
+		font-family: $mono;
+		font-size: 13px;
+		overflow-wrap: anywhere;
+	}
+
+	&__when {
+		font-size: 12px;
+		font-variant-numeric: tabular-nums;
+
+		small {
+			display: block;
+			color: $muted;
+			font-size: 12px;
+		}
+	}
+
+	&__size {
+		font-size: 12px;
+		font-variant-numeric: tabular-nums;
+		text-align: right;
+		white-space: nowrap;
+	}
+
+	.lw-bk-where,
+	.components-dropdown {
+		position: relative;
+		z-index: 1;
+	}
+}
+
+.lw-bk-tags {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+	margin-top: 4px;
+}
+
+.lw-bk-tag {
+	padding: 0 8px;
+	border-radius: 99px;
+	background: $track;
+	color: $muted;
+	font-size: 12px;
+	font-weight: 500;
+	line-height: 1.6;
+
+	&.is-label {
+		border-radius: $radius;
+		background: $brand-soft;
+		color: $brand;
+		font-weight: 600;
+	}
+
+	&.is-safetyRestore,
+	&.is-safetyReset {
+		background: $warning-bg;
+		color: $warning;
+	}
+
+	&.is-other {
+		border: 1px dashed $stroke;
+		background: transparent;
+	}
+
+	&.is-icon {
+		display: inline-flex;
+		padding: 0;
+		background: none;
+	}
+
+	&.is-lock {
+		color: $warning;
+	}
+}
+
+.lw-bk-where {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+
+	&__tile {
+		position: relative;
+		display: grid;
+		place-items: center;
+		width: 26px;
+		height: 26px;
+		border-radius: 6px;
+		background: $track;
+		color: $muted;
+
+		// A failed or running upload: a dot in the corner.
+		&.is-critical::after,
+		&.is-info::after {
+			content: "";
+			position: absolute;
+			right: -2px;
+			bottom: -2px;
+			width: 9px;
+			height: 9px;
+			border: 2px solid $surface;
+			border-radius: 50%;
+		}
+
+		&.is-critical::after {
+			background: $error;
+		}
+
+		&.is-info::after {
+			background: $warning;
+		}
+	}
+}
+
+// Narrow screens: the row's parts stack, ⋯ stays at the top right.
+@media (max-width: 760px) {
+	.lw-bk-row {
+		grid-template-columns: minmax(0, 1fr) auto;
+
+		> * {
+			grid-column: 1;
+		}
+
+		.components-dropdown {
+			grid-row: 1;
+			grid-column: 2;
+		}
+	}
+
+	.lw-bk-row__size {
+		text-align: left;
+	}
+
+	.lw-bk-search {
+		width: 100%;
+		margin-left: 0;
+
+		input[type="search"] {
+			width: 100%;
+		}
+	}
+}

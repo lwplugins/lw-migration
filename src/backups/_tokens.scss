@@ -1,0 +1,25 @@
+// Tokens of the Backups section, as in admin.scss: WPDS variables with
+// fallbacks for older WordPress; the accent is the logo colour.
+
+$surface: var(--wpds-color-background-surface-neutral-strong, #fff);
+$page: var(--wpds-color-background-surface-neutral, #fcfcfc);
+$stroke: var(--wpds-color-stroke-surface-neutral, #ddd);
+$stroke-weak: var(--wpds-color-stroke-surface-neutral-weak, #f0f0f0);
+$text: var(--wpds-color-foreground-content-neutral, #1e1e1e);
+$muted: var(--wpds-color-foreground-content-neutral-weak, #707070);
+$brand: var(--wp-admin-theme-color, #3858e9);
+$warning: var(--wpds-color-foreground-content-warning, #926300);
+$warning-bg: var(--wpds-color-background-surface-warning-weak, #fef8ee);
+$error: var(--wpds-color-foreground-content-error, #cc1818);
+$track: var(--wpds-color-background-track-neutral-weak, #f0f0f0);
+$radius: var(--wpds-border-radius-md, 4px);
+$radius-lg: var(--wpds-border-radius-lg, 8px);
+$gap-sm: var(--wpds-dimension-gap-sm, 8px);
+$gap-md: var(--wpds-dimension-gap-md, 12px);
+$gap-lg: var(--wpds-dimension-gap-lg, 16px);
+$gap-xl: var(--wpds-dimension-gap-xl, 24px);
+$mono: var(--wpds-typography-font-family-mono, monospace);
+
+$brand-soft: color-mix(in srgb, #{$brand} 9%, #{$surface});
+$row-hover: color-mix(in srgb, #{$track} 55%, #{$surface});
+$other: color-mix(in srgb, #{$muted} 55%, #{$surface});

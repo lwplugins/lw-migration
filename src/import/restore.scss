@@ -1,0 +1,545 @@
+// Restore section: the lead and the steps bar, the source tiles with the
+// chosen source's panel, and the check (the archive next to this site, what
+// gets replaced, the typed confirmation). Tokens as in admin.scss (WPDS
+// variables, fallbacks for older WordPress); the accent is the logo colour.
+
+$surface: var(--wpds-color-background-surface-neutral-strong, #fff);
+$stroke: var(--wpds-color-stroke-surface-neutral, #ddd);
+$stroke-weak: var(--wpds-color-stroke-surface-neutral-weak, #f0f0f0);
+$text: var(--wpds-color-foreground-content-neutral, #1e1e1e);
+$muted: var(--wpds-color-foreground-content-neutral-weak, #707070);
+$brand: var(--wp-admin-theme-color, #3858e9);
+$warning: var(--wpds-color-foreground-content-warning, #926300);
+$error: var(--wpds-color-foreground-content-error, #cc1818);
+$track: var(--wpds-color-background-track-neutral-weak, #f0f0f0);
+$radius-lg: var(--wpds-border-radius-lg, 8px);
+$gap-sm: var(--wpds-dimension-gap-sm, 8px);
+$gap-md: var(--wpds-dimension-gap-md, 12px);
+$gap-lg: var(--wpds-dimension-gap-lg, 16px);
+$gap-xl: var(--wpds-dimension-gap-xl, 24px);
+$mono: var(--wpds-typography-font-family-mono, monospace);
+
+$brand-soft: color-mix(in srgb, #{$brand} 7%, #{$surface});
+
+.lw-restore {
+	display: flex;
+	flex-direction: column;
+	gap: $gap-lg;
+	min-width: 0;
+	font-size: 13px;
+
+	.is-invalid {
+		.components-text-control__input,
+		.components-input-control__backdrop {
+			border-color: $error;
+			box-shadow: 0 0 0 1px $error;
+		}
+
+		.components-base-control__help {
+			color: $error;
+		}
+	}
+
+	&__lead {
+		padding: $gap-sm 0 0;
+	}
+
+	&__title {
+		margin: 0 0 6px;
+		font-size: 22px;
+		font-weight: 600;
+		line-height: 1.25;
+		text-wrap: balance;
+	}
+
+	&__intro {
+		max-width: 66ch;
+		margin: 0;
+		color: $muted;
+		font-size: 14px;
+	}
+
+	&__hint,
+	&__empty {
+		margin: $gap-sm 0 0;
+		color: $muted;
+		font-size: 12px;
+	}
+
+	&__error {
+		margin: 0 0 $gap-sm;
+		color: $error;
+		font-size: 13px;
+	}
+
+	&__actions {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: $gap-md;
+		padding-top: $gap-md;
+		border-top: 1px solid $stroke-weak;
+
+		.components-button {
+			margin-left: auto;
+		}
+	}
+
+	&__chosen {
+		min-width: 0;
+		margin: 0;
+		color: $muted;
+		font-size: 12px;
+		overflow-wrap: anywhere;
+
+		strong {
+			color: $text;
+			font-family: $mono;
+			font-weight: 600;
+		}
+	}
+}
+
+// Steps: the current step, "Step N of 3" and a thin bar of segments ---------
+
+.lw-steps {
+	display: flex;
+	flex-direction: column;
+	gap: $gap-sm;
+	width: 100%;
+	max-width: 420px;
+
+	&__text {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0 10px;
+		min-height: 24px;
+		margin: 0;
+		line-height: 24px;
+	}
+
+	&__name {
+		color: $text;
+		font-size: 13px;
+		font-weight: 600;
+	}
+
+	&__count {
+		color: $muted;
+		font-size: 12px;
+		font-variant-numeric: tabular-nums;
+	}
+
+	&__bar {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 5px;
+	}
+
+	&__segment {
+		height: 5px;
+		border-radius: 99px;
+		background: $stroke;
+
+		&.is-filled {
+			background: $brand;
+		}
+	}
+}
+
+// Source tiles and their panels ------------------------------------------------------
+
+.lw-sources {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 10px;
+}
+
+.lw-source {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	min-width: 0;
+	padding: 14px;
+	border: 1px solid $stroke;
+	border-radius: $radius-lg;
+	background: $surface;
+	color: $text;
+	font: inherit;
+	text-align: left;
+	cursor: pointer;
+
+	&:hover {
+		border-color: color-mix(in srgb, #{$brand} 45%, #{$stroke});
+	}
+
+	&:focus-visible {
+		outline: 2px solid $brand;
+		outline-offset: 2px;
+	}
+
+	&[aria-pressed="true"] {
+		border-color: $brand;
+		background: $brand-soft;
+		box-shadow: 0 0 0 1px $brand;
+	}
+
+	&__icon {
+		display: grid;
+		place-items: center;
+		width: 36px;
+		height: 36px;
+		border-radius: $radius-lg;
+		background: $track;
+		color: $brand;
+	}
+
+	&__title {
+		font-size: 14px;
+		font-weight: 600;
+	}
+
+	&__text {
+		color: $muted;
+		font-size: 12px;
+		line-height: 1.45;
+	}
+}
+
+// A list to pick one file from: name, its line, tags, size.
+.lw-pick__list {
+	max-height: 420px;
+	overflow-y: auto;
+	border: 1px solid $stroke;
+	border-radius: $radius-lg;
+}
+
+.lw-pick__row {
+	display: grid;
+	grid-template-columns: 20px minmax(0, 1fr) auto auto;
+	align-items: center;
+	gap: $gap-md;
+	padding: 12px 14px;
+	border-top: 1px solid $stroke-weak;
+	cursor: pointer;
+
+	&:first-child {
+		border-top: 0;
+	}
+
+	&:hover {
+		background: color-mix(in srgb, #{$brand} 4%, #{$surface});
+	}
+
+	&.is-chosen {
+		background: $brand-soft;
+	}
+
+	&:has(input:focus-visible) {
+		outline: 2px solid $brand;
+		outline-offset: -2px;
+	}
+
+	input {
+		margin: 0;
+		accent-color: $brand;
+	}
+}
+
+.lw-pick__text {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+}
+
+.lw-pick__name {
+	font-family: $mono;
+	font-size: 13px;
+	font-weight: 600;
+	overflow-wrap: anywhere;
+}
+
+.lw-pick__meta {
+	color: $muted;
+	font-size: 12px;
+}
+
+.lw-pick__tags {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	gap: 6px;
+}
+
+.lw-pick__tag {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	padding: 2px 10px;
+	border-radius: 99px;
+	background: $track;
+	color: $muted;
+	font-size: 11px;
+	font-weight: 600;
+	white-space: nowrap;
+
+	&.is-lock {
+		background: color-mix(in srgb, #{$warning} 12%, #{$surface});
+		color: $warning;
+	}
+}
+
+.lw-pick__size {
+	font-size: 12px;
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+}
+
+.lw-cloud-picks {
+	display: flex;
+	flex-wrap: wrap;
+	gap: $gap-sm;
+	margin-bottom: $gap-sm;
+}
+
+.lw-cloud-pick {
+	padding: 6px 14px 6px 10px;
+	border: 1px solid $stroke;
+	border-radius: 99px;
+	background: $surface;
+	color: $text;
+	font: inherit;
+	font-size: 13px;
+	cursor: pointer;
+
+	&:focus-visible {
+		outline: 2px solid $brand;
+		outline-offset: 2px;
+	}
+
+	&[aria-pressed="true"] {
+		border-color: $brand;
+		box-shadow: 0 0 0 1px $brand;
+	}
+
+	&:disabled {
+		cursor: not-allowed;
+		opacity: 0.6;
+	}
+}
+
+// The check -------------------------------------------------------------------------
+
+.lw-compare__sides {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 44px minmax(0, 1fr);
+	align-items: start;
+}
+
+.lw-compare__label {
+	margin: 0 0 4px;
+	color: $muted;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.lw-compare__host {
+	margin: 0;
+	font-size: 18px;
+	font-weight: 650;
+	overflow-wrap: anywhere;
+}
+
+.lw-compare__hint {
+	margin: 2px 0 0;
+	color: $muted;
+	font-size: 12px;
+}
+
+.lw-compare__arrow {
+	display: grid;
+	place-items: center;
+	padding-top: 22px;
+	color: $brand;
+}
+
+.lw-facts-table {
+	width: 100%;
+	margin-top: $gap-lg;
+	border-collapse: collapse;
+	font-size: 13px;
+
+	tr {
+		border-top: 1px solid $stroke-weak;
+	}
+
+	th,
+	td {
+		padding: 9px 8px;
+		text-align: left;
+		vertical-align: middle;
+	}
+
+	tbody th {
+		width: 150px;
+		color: $muted;
+		font-weight: 400;
+	}
+
+	&__value {
+		overflow-wrap: anywhere;
+		font-variant-numeric: tabular-nums;
+
+		&.is-warn {
+			color: $warning;
+			font-weight: 600;
+		}
+	}
+
+	&__marker {
+		width: 40px;
+		color: $muted;
+		text-align: center;
+	}
+
+	.is-changed {
+		background: color-mix(in srgb, #{$brand} 7%, transparent);
+
+		.lw-facts-table__marker {
+			color: $brand;
+		}
+	}
+
+	.is-unknown .lw-facts-table__value:first-of-type {
+		color: $muted;
+	}
+}
+
+.lw-replace__title {
+	margin: 0 0 $gap-sm;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.lw-replace__grid {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 10px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.lw-replace__part {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin: 0;
+	padding: 12px 14px;
+	border: 1px solid $stroke;
+	border-radius: $radius-lg;
+
+	&.is-absent,
+	&.is-shared {
+		background: $track;
+	}
+}
+
+.lw-replace__head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+
+	svg {
+		flex: none;
+		color: $brand;
+	}
+}
+
+.lw-replace__name {
+	font-size: 13px;
+	font-weight: 600;
+}
+
+.lw-replace__line {
+	color: $muted;
+	font-size: 12px;
+	overflow-wrap: anywhere;
+}
+
+.lw-check-actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	gap: $gap-md;
+	padding-top: $gap-md;
+	border-top: 1px solid $stroke-weak;
+
+	&__spacer {
+		flex: 1;
+	}
+
+	&__confirm {
+		width: 280px;
+		max-width: 100%;
+
+		input {
+			font-family: $mono;
+		}
+	}
+}
+
+// Narrow screens: two tiles a row, then one; the comparison stacks.
+@media (max-width: 900px) {
+	.lw-sources,
+	.lw-replace__grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 760px) {
+	.lw-compare__sides {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.lw-compare__arrow {
+		justify-content: start;
+		padding: 6px 0;
+		transform: rotate(90deg);
+	}
+
+	.lw-facts-table {
+		tr {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) 32px minmax(0, 1fr);
+			padding: 6px 0;
+		}
+
+		tbody th {
+			grid-column: 1 / -1;
+			width: auto;
+			padding-bottom: 0;
+		}
+	}
+
+	.lw-pick__row {
+		grid-template-columns: 20px minmax(0, 1fr);
+
+		.lw-pick__tags,
+		.lw-pick__size {
+			grid-column: 2;
+			justify-content: flex-start;
+		}
+	}
+}
+
+@media (max-width: 460px) {
+	.lw-sources,
+	.lw-replace__grid {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}

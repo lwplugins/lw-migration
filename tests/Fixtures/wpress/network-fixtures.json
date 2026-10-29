@@ -1,0 +1,214 @@
+{
+    "subdirectory": {
+        "home": "http://net-n.test",
+        "sites": {
+            "1": "http://net-n.test",
+            "2": "http://net-n.test/b2",
+            "3": "http://net-n.test/b3"
+        }
+    },
+    "subdomain": {
+        "home": "http://net-s.test",
+        "sites": {
+            "2": "http://b2.net-s.test"
+        }
+    },
+    "posts": {
+        "1": "Network Fixture Main",
+        "2": "Network Fixture B2",
+        "3": "Network Fixture B3"
+    },
+    "uploads": {
+        "1": "uploads/2026/10/main.txt",
+        "2": "uploads/sites/2/2026/10/b2.txt",
+        "3": "uploads/sites/3/2026/10/b3.txt"
+    },
+    "networkPlugin": "lwm-net-sample/lwm-net-sample.php",
+    "sitePlugin": {
+        "2": "lwm-site-sample/lwm-site-sample.php"
+    },
+    "theme": "lwm-ref-theme",
+    "users": {
+        "editor2": {
+            "site": 2,
+            "role": "editor"
+        },
+        "author3": {
+            "site": 3,
+            "role": "author"
+        }
+    },
+    "authoredBy": {
+        "site": 2,
+        "post": "By editor2",
+        "login": "editor2"
+    },
+    "tables": {
+        "network.wpress": [
+            "SERVMASK_PREFIX_2_commentmeta",
+            "SERVMASK_PREFIX_2_comments",
+            "SERVMASK_PREFIX_2_links",
+            "SERVMASK_PREFIX_2_options",
+            "SERVMASK_PREFIX_2_postmeta",
+            "SERVMASK_PREFIX_2_posts",
+            "SERVMASK_PREFIX_2_term_relationships",
+            "SERVMASK_PREFIX_2_term_taxonomy",
+            "SERVMASK_PREFIX_2_termmeta",
+            "SERVMASK_PREFIX_2_terms",
+            "SERVMASK_PREFIX_3_commentmeta",
+            "SERVMASK_PREFIX_3_comments",
+            "SERVMASK_PREFIX_3_links",
+            "SERVMASK_PREFIX_3_options",
+            "SERVMASK_PREFIX_3_postmeta",
+            "SERVMASK_PREFIX_3_posts",
+            "SERVMASK_PREFIX_3_term_relationships",
+            "SERVMASK_PREFIX_3_term_taxonomy",
+            "SERVMASK_PREFIX_3_termmeta",
+            "SERVMASK_PREFIX_3_terms",
+            "SERVMASK_PREFIX_blogmeta",
+            "SERVMASK_PREFIX_blogs",
+            "SERVMASK_PREFIX_commentmeta",
+            "SERVMASK_PREFIX_comments",
+            "SERVMASK_PREFIX_links",
+            "SERVMASK_PREFIX_options",
+            "SERVMASK_PREFIX_postmeta",
+            "SERVMASK_PREFIX_posts",
+            "SERVMASK_PREFIX_registration_log",
+            "SERVMASK_PREFIX_signups",
+            "SERVMASK_PREFIX_site",
+            "SERVMASK_PREFIX_sitemeta",
+            "SERVMASK_PREFIX_term_relationships",
+            "SERVMASK_PREFIX_term_taxonomy",
+            "SERVMASK_PREFIX_termmeta",
+            "SERVMASK_PREFIX_terms",
+            "SERVMASK_PREFIX_usermeta",
+            "SERVMASK_PREFIX_users"
+        ],
+        "sites-2.wpress": [
+            "SERVMASK_PREFIX_2_commentmeta",
+            "SERVMASK_PREFIX_2_comments",
+            "SERVMASK_PREFIX_2_links",
+            "SERVMASK_PREFIX_2_options",
+            "SERVMASK_PREFIX_2_postmeta",
+            "SERVMASK_PREFIX_2_posts",
+            "SERVMASK_PREFIX_2_term_relationships",
+            "SERVMASK_PREFIX_2_term_taxonomy",
+            "SERVMASK_PREFIX_2_termmeta",
+            "SERVMASK_PREFIX_2_terms",
+            "SERVMASK_PREFIX_mainsite_blogmeta",
+            "SERVMASK_PREFIX_mainsite_blogs",
+            "SERVMASK_PREFIX_mainsite_registration_log",
+            "SERVMASK_PREFIX_mainsite_signups",
+            "SERVMASK_PREFIX_mainsite_site",
+            "SERVMASK_PREFIX_mainsite_sitemeta",
+            "SERVMASK_PREFIX_mainsite_usermeta",
+            "SERVMASK_PREFIX_mainsite_users"
+        ],
+        "sites-1-3.wpress": [
+            "SERVMASK_PREFIX_3_commentmeta",
+            "SERVMASK_PREFIX_3_comments",
+            "SERVMASK_PREFIX_3_links",
+            "SERVMASK_PREFIX_3_options",
+            "SERVMASK_PREFIX_3_postmeta",
+            "SERVMASK_PREFIX_3_posts",
+            "SERVMASK_PREFIX_3_term_relationships",
+            "SERVMASK_PREFIX_3_term_taxonomy",
+            "SERVMASK_PREFIX_3_termmeta",
+            "SERVMASK_PREFIX_3_terms",
+            "SERVMASK_PREFIX_mainsite_blogmeta",
+            "SERVMASK_PREFIX_mainsite_blogs",
+            "SERVMASK_PREFIX_basesite_commentmeta",
+            "SERVMASK_PREFIX_basesite_comments",
+            "SERVMASK_PREFIX_basesite_links",
+            "SERVMASK_PREFIX_basesite_options",
+            "SERVMASK_PREFIX_basesite_postmeta",
+            "SERVMASK_PREFIX_basesite_posts",
+            "SERVMASK_PREFIX_mainsite_registration_log",
+            "SERVMASK_PREFIX_mainsite_signups",
+            "SERVMASK_PREFIX_mainsite_site",
+            "SERVMASK_PREFIX_mainsite_sitemeta",
+            "SERVMASK_PREFIX_basesite_term_relationships",
+            "SERVMASK_PREFIX_basesite_term_taxonomy",
+            "SERVMASK_PREFIX_basesite_termmeta",
+            "SERVMASK_PREFIX_basesite_terms",
+            "SERVMASK_PREFIX_mainsite_usermeta",
+            "SERVMASK_PREFIX_mainsite_users"
+        ],
+        "subdomain-sites-2.wpress": [
+            "SERVMASK_PREFIX_2_commentmeta",
+            "SERVMASK_PREFIX_2_comments",
+            "SERVMASK_PREFIX_2_links",
+            "SERVMASK_PREFIX_2_options",
+            "SERVMASK_PREFIX_2_postmeta",
+            "SERVMASK_PREFIX_2_posts",
+            "SERVMASK_PREFIX_2_term_relationships",
+            "SERVMASK_PREFIX_2_term_taxonomy",
+            "SERVMASK_PREFIX_2_termmeta",
+            "SERVMASK_PREFIX_2_terms",
+            "SERVMASK_PREFIX_mainsite_blogmeta",
+            "SERVMASK_PREFIX_mainsite_blogs",
+            "SERVMASK_PREFIX_mainsite_registration_log",
+            "SERVMASK_PREFIX_mainsite_signups",
+            "SERVMASK_PREFIX_mainsite_site",
+            "SERVMASK_PREFIX_mainsite_sitemeta",
+            "SERVMASK_PREFIX_mainsite_usermeta",
+            "SERVMASK_PREFIX_mainsite_users"
+        ]
+    },
+    "entries": {
+        "network.wpress": [
+            "package.json",
+            "multisite.json",
+            "index.php",
+            "uploads/2026/10/main.txt",
+            "uploads/sites/3/2026/10/b3.txt",
+            "uploads/sites/2/2026/10/b2.txt",
+            "plugins/index.php",
+            "plugins/lwm-net-sample/lwm-net-sample.php",
+            "plugins/lwm-site-sample/lwm-site-sample.php",
+            "themes/index.php",
+            "themes/lwm-ref-theme/index.php",
+            "themes/lwm-ref-theme/style.css",
+            "database.sql"
+        ],
+        "sites-2.wpress": [
+            "package.json",
+            "multisite.json",
+            "index.php",
+            "uploads/sites/2/2026/10/b2.txt",
+            "plugins/index.php",
+            "plugins/lwm-net-sample/lwm-net-sample.php",
+            "plugins/lwm-site-sample/lwm-site-sample.php",
+            "themes/index.php",
+            "themes/lwm-ref-theme/index.php",
+            "themes/lwm-ref-theme/style.css",
+            "database.sql"
+        ],
+        "sites-1-3.wpress": [
+            "package.json",
+            "multisite.json",
+            "index.php",
+            "uploads/sites/3/2026/10/b3.txt",
+            "uploads/2026/10/main.txt",
+            "plugins/index.php",
+            "plugins/lwm-net-sample/lwm-net-sample.php",
+            "themes/index.php",
+            "themes/lwm-ref-theme/index.php",
+            "themes/lwm-ref-theme/style.css",
+            "database.sql"
+        ],
+        "subdomain-sites-2.wpress": [
+            "package.json",
+            "multisite.json",
+            "index.php",
+            "uploads/sites/2/2026/10/b2.txt",
+            "plugins/index.php",
+            "plugins/lwm-net-sample/lwm-net-sample.php",
+            "plugins/lwm-site-sample/lwm-site-sample.php",
+            "themes/index.php",
+            "themes/lwm-ref-theme/index.php",
+            "themes/lwm-ref-theme/style.css",
+            "database.sql"
+        ]
+    }
+}

@@ -1,0 +1,1000 @@
+// Schedules section: the lead, the week ruler (the one bold element), the
+// WP-Cron problem, one card per schedule, the empty state's starters, the
+// editor sheet and the run log. Tokens: ../backups/_tokens.scss. Type follows
+// the shared LW scale; the uppercase fact titles are 11 px.
+
+@use "sass:list";
+@use "../backups/tokens" as *;
+
+$success: var(--wpds-color-foreground-content-success, #007f30);
+$info-bg: var(--wpds-color-background-surface-neutral, #f6f7f7);
+
+// Lane colours: one per schedule, in list order (week.js LANES). The first
+// is the plugin's accent; each has a lighter variant for a dark admin
+// colour scheme (light-dark() follows the page's color-scheme). A custom
+// property takes an unsupported value as it is (no fallback to the line
+// before), so the dark variant is only declared where light-dark() works.
+$lanes: (
+	(var(--wp-admin-theme-color, #0e7490), #5cc8e0),
+	(#a1489a, #e08ad8),
+	(#3858e9, #7d93ff),
+	(#b4531a, #f0956a)
+);
+
+@each $pair in $lanes {
+	$index: list.index($lanes, $pair) - 1;
+
+	.lw-lane-#{$index} {
+		--lw-lane: #{list.nth($pair, 1)};
+	}
+
+	@supports (color: light-dark(#000, #fff)) {
+		.lw-lane-#{$index} {
+			--lw-lane: light-dark(#{list.nth($pair, 1)}, #{list.nth($pair, 2)});
+		}
+	}
+}
+
+.lw-swatch {
+	flex: none;
+	width: 10px;
+	height: 10px;
+	border-radius: 3px;
+	background: var(--lw-lane, #{$brand});
+}
+
+.lw-scheds {
+	display: flex;
+	flex-direction: column;
+	gap: $gap-lg;
+	min-width: 0;
+	font-size: 13px;
+
+	.components-notice {
+		margin: 0;
+	}
+}
+
+// Lead --------------------------------------------------------------------------
+
+.lw-sched-lead {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: $gap-lg;
+	padding: $gap-sm 0 0;
+
+	> div {
+		flex: 1 1 420px;
+		min-width: 0;
+	}
+
+	&__title {
+		margin: 0 0 6px;
+		font-size: 22px;
+		font-weight: 600;
+		line-height: 1.25;
+	}
+
+	&__intro {
+		max-width: 64ch;
+		margin: 0;
+		color: $muted;
+		font-size: 14px;
+	}
+}
+
+// The week ruler ------------------------------------------------------------------
+
+.lw-week {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: $gap-lg 18px 14px;
+	border: 1px solid $stroke;
+	border-radius: $radius-lg;
+	background: $surface;
+
+	&__head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 4px $gap-md;
+	}
+
+	&__title {
+		margin: 0;
+		font-size: 15px;
+		font-weight: 600;
+	}
+
+	&__hint {
+		margin: 0;
+		color: $muted;
+		font-size: 12px;
+	}
+
+	&__scroll {
+		overflow-x: auto;
+	}
+
+	&__ruler {
+		display: grid;
+		grid-template-columns: 180px minmax(0, 1fr);
+		row-gap: 6px;
+		min-width: 640px;
+		padding-top: 2px;
+	}
+
+	&__days {
+		display: grid;
+		grid-column: 2;
+		grid-template-columns: repeat(7, minmax(0, 1fr));
+		color: $muted;
+		font-size: 12px;
+
+		span {
+			padding-left: 6px;
+			border-left: 1px solid $stroke-weak;
+			white-space: nowrap;
+		}
+
+		.is-today {
+			color: $text;
+			font-weight: 600;
+		}
+	}
+
+	&__row {
+		display: contents;
+	}
+
+	&__name {
+		display: flex;
+		align-items: center;
+		gap: $gap-sm;
+		min-width: 0;
+		padding-right: 10px;
+		font-size: 13px;
+		font-weight: 600;
+
+		> span {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		.is-off & {
+			color: $muted;
+			font-weight: 500;
+		}
+	}
+
+	&__lane {
+		position: relative;
+		height: 30px;
+		border-radius: 6px;
+		background-color: $track;
+		background-image: repeating-linear-gradient(
+			to right,
+			transparent 0,
+			transparent calc(100% / 7 - 1px),
+			$stroke calc(100% / 7 - 1px),
+			$stroke calc(100% / 7)
+		);
+
+		&.is-off {
+			display: grid;
+			place-items: center;
+			border: 1px dashed $stroke;
+			background: transparent;
+			color: $muted;
+			font-size: 12px;
+		}
+	}
+
+	&__tick {
+		position: absolute;
+		top: 5px;
+		bottom: 5px;
+		width: 6px;
+		margin-left: -3px;
+		padding: 0;
+		border: 0;
+		border-radius: 3px;
+		background: var(--lw-lane, #{$brand});
+		cursor: pointer;
+
+		// A larger target than the 6 px mark (touch).
+		&::before {
+			content: "";
+			position: absolute;
+			inset: -5px -4px;
+		}
+
+		&:hover,
+		&:focus-visible {
+			transform: scaleX(1.6);
+		}
+
+		&:focus-visible {
+			z-index: 1;
+			outline: 2px solid $text;
+			outline-offset: 2px;
+		}
+	}
+
+	&__now {
+		position: absolute;
+		top: -4px;
+		bottom: -4px;
+		width: 2px;
+		margin-left: -1px;
+		border-radius: 1px;
+		background: $error;
+		pointer-events: none;
+	}
+
+	&__nowlabel {
+		position: relative;
+		grid-column: 2;
+		height: 20px;
+		color: $error;
+		font-size: 12px;
+		font-weight: 600;
+
+		span {
+			position: absolute;
+			transform: translateX(-50%);
+			white-space: nowrap;
+		}
+	}
+
+	&__picked {
+		min-height: 0;
+		margin: 0;
+		font-size: 12px;
+
+		&:empty {
+			display: none;
+		}
+	}
+
+	&__clash {
+		display: flex;
+		align-items: flex-start;
+		gap: $gap-sm;
+		margin: 0;
+		color: $warning;
+		font-size: 12px;
+
+		svg {
+			flex: none;
+			fill: currentColor;
+		}
+	}
+}
+
+// WP-Cron problem ---------------------------------------------------------------
+
+.lw-cron {
+	display: grid;
+	grid-template-columns: 24px minmax(0, 1fr);
+	gap: $gap-md;
+	padding: 14px 18px;
+	border: 1px solid $stroke;
+	border-radius: $radius-lg;
+	background: $info-bg;
+
+	> svg {
+		margin-top: 1px;
+		fill: $muted;
+	}
+
+	&.is-late {
+		border-color: color-mix(in srgb, #{$warning} 35%, transparent);
+		background: $warning-bg;
+
+		> svg {
+			fill: $warning;
+		}
+	}
+
+	&__text {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		min-width: 0;
+
+		p {
+			margin: 0;
+			font-size: 13px;
+		}
+	}
+
+	p.lw-cron__lead {
+		font-size: 13px;
+		font-weight: 600;
+	}
+
+	&__command {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: $gap-sm;
+		margin: 2px 0;
+
+		code {
+			min-width: 0;
+			padding: 7px 10px;
+			border: 1px solid $stroke;
+			border-radius: 6px;
+			background: $surface;
+			font-family: $mono;
+			font-size: 12px;
+			overflow-wrap: anywhere;
+		}
+	}
+
+	p.lw-cron__note {
+		color: $muted;
+	}
+}
+
+// Schedule card -----------------------------------------------------------------
+
+.lw-sched {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid $stroke;
+	border-radius: $radius-lg;
+	background: $surface;
+
+	&__head {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		align-items: start;
+		gap: 4px $gap-lg;
+		padding: $gap-lg 18px $gap-md;
+	}
+
+	&__name {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 6px 10px;
+		min-width: 0;
+	}
+
+	&__title {
+		margin: 0;
+		font-size: 16px;
+		font-weight: 600;
+		overflow-wrap: anywhere;
+	}
+
+	&__switch {
+		grid-row: 1 / span 2;
+		grid-column: 2;
+
+		.lw-admin-switch__state {
+			font-size: 12px;
+			white-space: nowrap;
+		}
+	}
+
+	&__cadence {
+		grid-column: 1;
+		margin: 0;
+		color: $muted;
+		font-size: 13px;
+	}
+
+	&__progress {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		padding: 0 18px $gap-md;
+
+		p {
+			margin: 0;
+		}
+	}
+
+	&__bar {
+		height: 6px;
+		overflow: hidden;
+		border-radius: 99px;
+		background: $track;
+
+		span {
+			display: block;
+			height: 100%;
+			border-radius: 99px;
+			background: var(--lw-lane, #{$brand});
+		}
+	}
+
+	&__facts {
+		display: grid;
+		grid-template-columns: 1.1fr 1.2fr 1.3fr;
+		border-top: 1px solid $stroke-weak;
+	}
+
+	&__foot {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 6px;
+		padding: 10px 14px;
+		border-top: 1px solid $stroke-weak;
+	}
+
+	&__spacer {
+		flex: 1;
+	}
+}
+
+.lw-fact {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	min-width: 0;
+	padding: $gap-md 18px 14px;
+
+	& + & {
+		border-left: 1px solid $stroke-weak;
+	}
+
+	p {
+		margin: 0;
+	}
+
+	&__title {
+		margin: 0;
+		color: $muted;
+		font-size: 11px;
+		font-weight: 600;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+	}
+
+	&__next {
+		color: var(--lw-lane, #{$text});
+		font-size: 18px;
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+	}
+
+	&__sub {
+		color: $muted;
+		font-size: 12px;
+	}
+
+	&__after {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px 12px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		color: $muted;
+		font-size: 12px;
+
+		li {
+			margin: 0;
+		}
+	}
+
+	&__last {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: $gap-sm;
+		font-size: 12px;
+	}
+
+	&__scope {
+		font-size: 12px;
+		font-weight: 600;
+	}
+
+	&__error {
+		color: $error;
+		font-size: 12px;
+		overflow-wrap: anywhere;
+	}
+
+	&__mail {
+		display: flex;
+		align-items: center;
+		gap: $gap-sm;
+		color: $muted;
+		font-size: 12px;
+
+		svg {
+			flex: none;
+			fill: currentColor;
+		}
+	}
+}
+
+// The last runs, one bar each (history.js tones).
+.lw-strip {
+	display: flex;
+	align-items: flex-end;
+	gap: 3px;
+	height: 26px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	li {
+		width: 9px;
+		height: 100%;
+		margin: 0;
+		border-radius: 2px;
+		background: $success;
+
+		&.is-partial {
+			background: $warning;
+		}
+
+		&.is-failed {
+			background: $error;
+		}
+
+		&.is-skipped {
+			height: 40%;
+			background: $stroke;
+		}
+
+		&.is-unknown {
+			background: $other;
+		}
+	}
+}
+
+.lw-parts {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	li {
+		margin: 0;
+		padding: 1px 8px;
+		border: 1px solid transparent;
+		border-radius: $radius;
+		background: $track;
+		font-size: 13px;
+		font-weight: 600;
+
+		&.is-out {
+			border: 1px dashed $stroke;
+			background: transparent;
+			color: $muted;
+			text-decoration: line-through;
+		}
+	}
+}
+
+.lw-places {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	font-size: 13px;
+
+	li {
+		display: grid;
+		grid-template-columns: 18px minmax(0, 1fr);
+		align-items: center;
+		gap: $gap-sm;
+		margin: 0;
+	}
+
+	.is-gone {
+		color: $muted;
+	}
+
+	&__keep {
+		color: $muted;
+	}
+}
+
+// Empty state -------------------------------------------------------------------
+
+.lw-sched-empty {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	padding: 22px 20px;
+	border: 1px solid $stroke;
+	border-radius: $radius-lg;
+	background: $surface;
+
+	&__title {
+		margin: 0;
+		font-size: 16px;
+		font-weight: 600;
+	}
+
+	&__lead {
+		margin: 0;
+		color: $muted;
+	}
+}
+
+.lw-starters {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 10px;
+}
+
+.lw-starter {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding: 14px;
+	border: 1px solid $stroke;
+	border-radius: $radius-lg;
+	background: $surface;
+	color: $text;
+	font: inherit;
+	text-align: left;
+	cursor: pointer;
+
+	&:hover {
+		border-color: $brand;
+	}
+
+	&:focus-visible {
+		outline: 2px solid $brand;
+		outline-offset: 2px;
+	}
+
+	strong {
+		font-size: 13px;
+	}
+
+	span {
+		color: $muted;
+		font-size: 12px;
+	}
+}
+
+// Editor sheet: a Modal docked to the right, full screen on a phone ---------------
+
+@keyframes lw-sheet-in {
+	from {
+		opacity: 0;
+		transform: translateX(32px);
+	}
+
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+.components-modal__screen-overlay.lw-sheet-overlay {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.components-modal__frame.lw-sheet {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: min(580px, 100%);
+	max-width: none;
+	height: 100%;
+	max-height: none;
+	margin: 0;
+	border-left: 1px solid $stroke;
+	border-radius: 0;
+	animation-name: lw-sheet-in;
+
+	.components-modal__content {
+		display: flex;
+		flex-direction: column;
+		margin-top: 0;
+		padding: 0;
+		overflow: hidden;
+	}
+
+	.components-modal__header {
+		position: static;
+		flex: none;
+		height: auto;
+		padding: $gap-lg 20px $gap-md;
+		border-bottom: 1px solid $stroke-weak;
+	}
+
+	.components-modal__header-heading {
+		font-size: 18px;
+	}
+
+	.components-modal__children-container {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		min-height: 0;
+	}
+}
+
+.lw-sheet__form {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	min-height: 0;
+}
+
+.lw-sheet__body {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: 0;
+	min-height: 0;
+	padding: $gap-lg 20px 20px;
+	overflow-y: auto;
+
+	> * + * {
+		margin-top: 22px;
+	}
+
+	> .lw-options__group + .lw-options__group {
+		padding-top: 22px;
+		border-top: 1px solid $stroke-weak;
+	}
+
+	.lw-options__group .lw-options__group {
+		gap: $gap-md;
+	}
+
+	h5.lw-options__title {
+		font-size: 13px;
+	}
+}
+
+.lw-sheet__foot {
+	display: flex;
+	flex: none;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+	padding: $gap-md 20px;
+	border-top: 1px solid $stroke-weak;
+
+	label {
+		font-size: 13px;
+	}
+}
+
+.lw-sheet__spacer {
+	flex: 1;
+}
+
+.lw-sheet-sentence {
+	flex: none;
+	padding: 14px 20px;
+	border-bottom: 1px solid $stroke-weak;
+	background: $brand-soft;
+
+	p {
+		margin: 0;
+		font-size: 13px;
+		line-height: 1.5;
+	}
+
+	b {
+		color: $brand;
+		font-weight: 600;
+	}
+
+	p.lw-sheet-sentence__runs {
+		margin-top: 6px;
+		color: $muted;
+		font-size: 12px;
+	}
+}
+
+.lw-sheet-checks {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: $gap-sm;
+
+	.components-checkbox-control {
+		padding: 9px 10px;
+		border: 1px solid $stroke;
+		border-radius: 6px;
+	}
+}
+
+// The frequency choice: soft pills that wrap.
+.lw-pills {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.lw-pill {
+	padding: 6px 12px;
+	border: 1px solid $stroke;
+	border-radius: 99px;
+	background: $surface;
+	color: $text;
+	font: inherit;
+	font-size: 13px;
+	cursor: pointer;
+
+	&:hover {
+		border-color: $brand;
+	}
+
+	&:focus-visible {
+		outline: 2px solid $brand;
+		outline-offset: 2px;
+	}
+
+	&[aria-pressed="true"] {
+		border-color: $brand;
+		background: $brand-soft;
+		box-shadow: 0 0 0 1px $brand;
+		color: $brand;
+		font-weight: 600;
+	}
+}
+
+.lw-schedule-time {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+	gap: 12px;
+}
+
+.lw-schedule-zone,
+.lw-options__help {
+	margin: 0;
+	font-size: 12px;
+	color: $muted;
+}
+
+.lw-schedule-cloud {
+	padding: 10px 12px;
+	border: 1px solid $stroke;
+	border-radius: 6px;
+
+	&.is-chosen {
+		border-color: color-mix(in srgb, #{$brand} 45%, #{$stroke});
+	}
+
+	.lw-schedule-time {
+		margin-top: 10px;
+	}
+}
+
+// Run log -----------------------------------------------------------------------
+
+.lw-log {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 13px;
+
+	th,
+	td {
+		padding: 10px 8px;
+		text-align: left;
+		vertical-align: top;
+		border-bottom: 1px solid $stroke;
+	}
+
+	th {
+		font-size: 12px;
+		font-weight: 600;
+	}
+
+	&__error {
+		display: block;
+		margin: 6px 0 0;
+		font-size: 12px;
+	}
+
+	&__file {
+		overflow-wrap: anywhere;
+	}
+}
+
+.lw-log__empty,
+.lw-log {
+	margin-bottom: 24px;
+}
+
+// Narrow screens ----------------------------------------------------------------
+
+@media (max-width: 960px) {
+	.lw-sched__facts {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	}
+
+	.lw-fact:nth-child(3) {
+		grid-column: 1 / -1;
+		border-top: 1px solid $stroke-weak;
+		border-left: 0;
+	}
+
+	.lw-starters {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+
+@media (max-width: 600px) {
+	.lw-week__ruler {
+		grid-template-columns: 120px minmax(0, 1fr);
+	}
+
+	.lw-sched__head {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.lw-sched__switch {
+		grid-row: auto;
+		grid-column: 1;
+	}
+
+	.lw-sched__facts {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.lw-fact + .lw-fact,
+	.lw-fact:nth-child(3) {
+		border-top: 1px solid $stroke-weak;
+		border-left: 0;
+	}
+
+	.lw-sheet-checks {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.components-modal__frame.lw-sheet {
+		width: 100%;
+		border-left: 0;
+	}
+
+	// On a phone every run is a block of label/value lines.
+	.lw-log {
+		thead {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			overflow: hidden;
+			clip: rect(0 0 0 0);
+		}
+
+		tr {
+			display: block;
+			padding: 12px 0;
+			border-bottom: 1px solid $stroke;
+		}
+
+		td {
+			display: grid;
+			grid-template-columns: 7.5em minmax(0, 1fr);
+			gap: 8px;
+			padding: 4px 0;
+			border: 0;
+
+			&::before {
+				content: attr(data-label);
+				font-size: 12px;
+				color: $muted;
+			}
+		}
+	}
+}

@@ -1,0 +1,39 @@
+<?php
+
+namespace LightweightPlugins\Migration\Vendor\phpseclib3\File\ASN1\Maps;
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * NoticeReference
+ *
+ * PHP version 5
+ *
+ * @author    Jim Wigginton <terrafrost@php.net>
+ * @copyright 2016 Jim Wigginton
+ * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @link      http://phpseclib.sourceforge.net
+ */
+
+use LightweightPlugins\Migration\Vendor\phpseclib3\File\ASN1;
+
+/**
+ * NoticeReference
+ *
+ * @author  Jim Wigginton <terrafrost@php.net>
+ */
+abstract class NoticeReference
+{
+    const MAP = [
+        'type' => ASN1::TYPE_SEQUENCE,
+        'children' => [
+            'organization' => DisplayText::MAP,
+            'noticeNumbers' => [
+                'type' => ASN1::TYPE_SEQUENCE,
+                'min' => 1,
+                'max' => 200,
+                'children' => ['type' => ASN1::TYPE_INTEGER]
+            ]
+        ]
+    ];
+}

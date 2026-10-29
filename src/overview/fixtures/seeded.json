@@ -1,0 +1,238 @@
+{
+	"site": {
+		"host": "croco2.example.test",
+		"network": false
+	},
+	"last": {
+		"name": "site-test-20261016-030000-001-abcd1234.wpress",
+		"time": 1792119601,
+		"size": 30,
+		"files": null,
+		"dbSize": null,
+		"dbTables": null,
+		"cloud": [
+			{
+				"id": "aaaa1111",
+				"name": "Offsite",
+				"status": "ok"
+			}
+		],
+		"local": true,
+		"outcome": "ok"
+	},
+	"running": null,
+	"days": {
+		"window": 30,
+		"covered": 3,
+		"of": 14
+	},
+	"history": [
+		{
+			"day": "2026-09-17",
+			"backups": []
+		},
+		{
+			"day": "2026-09-18",
+			"backups": []
+		},
+		{
+			"day": "2026-09-19",
+			"backups": []
+		},
+		{
+			"day": "2026-09-20",
+			"backups": []
+		},
+		{
+			"day": "2026-09-21",
+			"backups": []
+		},
+		{
+			"day": "2026-09-22",
+			"backups": []
+		},
+		{
+			"day": "2026-09-23",
+			"backups": []
+		},
+		{
+			"day": "2026-09-24",
+			"backups": []
+		},
+		{
+			"day": "2026-09-25",
+			"backups": []
+		},
+		{
+			"day": "2026-09-26",
+			"backups": []
+		},
+		{
+			"day": "2026-09-27",
+			"backups": []
+		},
+		{
+			"day": "2026-09-28",
+			"backups": []
+		},
+		{
+			"day": "2026-09-29",
+			"backups": []
+		},
+		{
+			"day": "2026-09-30",
+			"backups": []
+		},
+		{
+			"day": "2026-10-01",
+			"backups": []
+		},
+		{
+			"day": "2026-10-02",
+			"backups": []
+		},
+		{
+			"day": "2026-10-03",
+			"backups": []
+		},
+		{
+			"day": "2026-10-04",
+			"backups": []
+		},
+		{
+			"day": "2026-10-05",
+			"backups": []
+		},
+		{
+			"day": "2026-10-06",
+			"backups": []
+		},
+		{
+			"day": "2026-10-07",
+			"backups": []
+		},
+		{
+			"day": "2026-10-08",
+			"backups": []
+		},
+		{
+			"day": "2026-10-09",
+			"backups": []
+		},
+		{
+			"day": "2026-10-10",
+			"backups": []
+		},
+		{
+			"day": "2026-10-11",
+			"backups": []
+		},
+		{
+			"day": "2026-10-12",
+			"backups": []
+		},
+		{
+			"day": "2026-10-13",
+			"backups": []
+		},
+		{
+			"day": "2026-10-14",
+			"backups": [
+				{
+					"size": 25,
+					"state": "local",
+					"manual": true
+				}
+			]
+		},
+		{
+			"day": "2026-10-15",
+			"backups": [
+				{
+					"size": 20,
+					"state": "cloud",
+					"manual": false
+				}
+			]
+		},
+		{
+			"day": "2026-10-16",
+			"backups": [
+				{
+					"size": 30,
+					"state": "cloud",
+					"manual": false
+				}
+			]
+		}
+	],
+	"attention": [
+		{
+			"kind": "reauth",
+			"destination": "bbbb2222",
+			"text": "Dropbox needs a new sign-in: the connection expired, so uploads there are skipped.",
+			"action": "destinations"
+		}
+	],
+	"destinations": [
+		{
+			"id": "aaaa1111",
+			"name": "Offsite",
+			"type": "s3",
+			"where": "b/site · ",
+			"status": "ok",
+			"lastUpload": 1792120320,
+			"count": 2,
+			"preset": "r2",
+			"mode": null
+		},
+		{
+			"id": "bbbb2222",
+			"name": "Dropbox",
+			"type": "dropbox",
+			"where": "Not connected yet",
+			"status": "reauth",
+			"lastUpload": null,
+			"count": 0,
+			"preset": null,
+			"mode": null
+		}
+	],
+	"schedule": {
+		"next": 1792206000,
+		"enabled": true,
+		"interval": 86400,
+		"name": "Nightly",
+		"destinations": [
+			"Offsite"
+		],
+		"keep": "7 days",
+		"runs": [
+			{
+				"time": 1792120320,
+				"outcome": "ok",
+				"reason": null
+			},
+			{
+				"time": 1792033920,
+				"outcome": "ok",
+				"reason": null
+			}
+		]
+	},
+	"links": [
+		{
+			"id": "cccccccccccccccc",
+			"host": "dev2.example.test",
+			"direction": "pull",
+			"incoming": false,
+			"secure": true,
+			"status": "ready"
+		}
+	],
+	"folder": {
+		"path": "",
+		"protected": true,
+		"free": 44200000000
+	}
+}

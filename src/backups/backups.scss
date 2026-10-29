@@ -1,0 +1,168 @@
+// Backups section: the section's frame, the lead, the storage strip and the
+// list | panel split. The list (list.scss) and the panel (detail.scss) have
+// their own files. Tokens: _tokens.scss. Type follows the shared LW scale.
+
+@use "tokens" as *;
+
+.lw-bk {
+	display: flex;
+	flex-direction: column;
+	gap: $gap-lg;
+	min-width: 0;
+	font-size: 13px;
+
+	.components-notice {
+		margin: 0;
+	}
+
+	.components-button.is-link {
+		font-weight: 600;
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
+
+// Lead --------------------------------------------------------------------------
+
+.lw-bk-lead {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: $gap-lg;
+	padding: $gap-sm 0 0;
+
+	&__title {
+		margin: 0 0 6px;
+		font-size: 22px;
+		font-weight: 600;
+		line-height: 1.25;
+	}
+
+	&__intro {
+		max-width: 64ch;
+		margin: 0;
+		color: $muted;
+		font-size: 14px;
+	}
+
+	&__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: $gap-sm;
+	}
+}
+
+// Storage strip: the one bold element ---------------------------------------------
+
+.lw-bk-storage {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: $gap-sm 20px;
+	align-items: center;
+	padding: $gap-lg 20px;
+	border: 1px solid $stroke-weak;
+	border-radius: $radius-lg;
+	background: $surface;
+
+	&__total {
+		margin: 0;
+		font-size: 13px;
+
+		strong {
+			font-size: 20px;
+			font-weight: 650;
+			letter-spacing: -0.01em;
+			font-variant-numeric: tabular-nums;
+		}
+	}
+
+	&__keep {
+		margin: 0;
+		color: $muted;
+		font-size: 12px;
+		text-align: right;
+	}
+
+	&__bar {
+		display: flex;
+		grid-column: 1 / -1;
+		gap: 2px;
+		height: 12px;
+		overflow: hidden;
+		border-radius: 6px;
+		background: $track;
+
+		span {
+			min-width: 4px;
+			height: 100%;
+		}
+	}
+
+	&__legend {
+		display: flex;
+		flex-wrap: wrap;
+		grid-column: 1 / -1;
+		gap: 4px $gap-lg;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		color: $muted;
+		font-size: 12px;
+
+		i {
+			display: inline-block;
+			width: 10px;
+			height: 10px;
+			margin-right: 6px;
+			border-radius: 2px;
+		}
+	}
+
+	.is-own {
+		background: $brand;
+	}
+
+	.is-other {
+		background: $other;
+	}
+
+	.is-free {
+		background: $track;
+		box-shadow: inset 0 0 0 1px $stroke;
+	}
+
+	&__bar .is-free {
+		box-shadow: none;
+	}
+}
+
+// List | panel ----------------------------------------------------------------
+
+.lw-bk-split {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 380px;
+	gap: $gap-lg;
+	align-items: start;
+}
+
+// Narrow screens -------------------------------------------------------------
+
+@media (max-width: 1100px) {
+	.lw-bk-split {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+
+@media (max-width: 760px) {
+	.lw-bk-storage {
+		grid-template-columns: minmax(0, 1fr);
+
+		&__keep {
+			text-align: left;
+		}
+	}
+}

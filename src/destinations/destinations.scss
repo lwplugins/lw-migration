@@ -1,0 +1,721 @@
+// Destinations section: one card per destination (tile, name and state,
+// where, facts; the actions on the right), its panels below the row (the
+// backups there, the delete confirmation, the host key) and the edit form
+// in place of the row. Tokens: ../backups/_tokens.scss. Type follows the
+// shared LW scale: card titles 14 px, secondary text 12 px.
+
+@use "../backups/tokens" as *;
+
+.lw-destinations {
+	display: flex;
+	flex-direction: column;
+	gap: $gap-md;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.lw-destinations__notice {
+	margin: 0;
+
+	.components-notice__content {
+		line-height: 1.5;
+	}
+}
+
+.lw-destinations-skel {
+	display: flex;
+	flex-direction: column;
+	gap: $gap-lg;
+}
+
+// A card --------------------------------------------------------------------------
+
+.lw-dest {
+	margin: 0;
+	border: 1px solid $stroke;
+	border-radius: $radius-lg;
+	background: $surface;
+
+	&.is-editing {
+		border-color: $brand;
+	}
+
+	// A destination being added (below the shelf).
+	&.is-draft {
+		border-style: dashed;
+		border-color: $brand;
+	}
+
+	.components-notice {
+		margin: 0;
+	}
+
+	&__row {
+		display: grid;
+		grid-template-columns: 44px minmax(0, 1fr) auto;
+		gap: 14px;
+		align-items: start;
+		padding: $gap-lg $gap-lg $gap-lg 18px;
+
+		&.is-head {
+			grid-template-columns: 44px minmax(0, 1fr);
+			padding-bottom: 4px;
+		}
+	}
+
+	&__tile {
+		display: grid;
+		place-items: center;
+		width: 44px;
+		height: 44px;
+		border-radius: 10px;
+		background: $track;
+	}
+
+	&__main {
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+		min-width: 0;
+	}
+
+	&__title {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 4px 10px;
+	}
+
+	&__name {
+		margin: 0;
+		font-size: 14px;
+		font-weight: 600;
+		line-height: 1.4;
+
+		&:focus {
+			outline: none;
+		}
+
+		&:focus-visible {
+			outline: 2px solid $brand;
+			outline-offset: 2px;
+		}
+	}
+
+	&__where {
+		margin: 0;
+		color: $muted;
+		font-family: $mono;
+		font-size: 12px;
+		overflow-wrap: anywhere;
+
+		&.is-live {
+			color: $brand;
+		}
+
+		&.is-empty {
+			font-family: inherit;
+			font-style: italic;
+		}
+	}
+
+	&__facts {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px 18px;
+		margin: 4px 0 0;
+		padding: 0;
+		list-style: none;
+		color: $muted;
+		font-size: 12px;
+
+		b {
+			color: $text;
+			font-weight: 500;
+		}
+	}
+
+	&__message {
+		margin: 4px 0 0;
+		font-size: 12px;
+
+		&.is-warning {
+			color: $warning;
+		}
+
+		&.is-error {
+			color: $error;
+		}
+	}
+
+	&__actions {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: flex-end;
+		gap: 6px;
+	}
+
+	&__notices {
+		display: flex;
+		flex-direction: column;
+		gap: $gap-sm;
+		padding: 0 $gap-lg $gap-lg 76px;
+	}
+
+	// A panel below the row (one at a time).
+	&__panel {
+		display: flex;
+		flex-direction: column;
+		gap: $gap-md;
+		padding: $gap-lg 18px 18px 76px;
+		border-top: 1px solid $stroke-weak;
+
+		&.is-warning,
+		&.is-error {
+			border-top-color: transparent;
+			border-radius: 0 0 $radius-lg $radius-lg;
+		}
+
+		&.is-warning {
+			background: $warning-bg;
+		}
+
+		&.is-error {
+			background: color-mix(in srgb, #{$error} 7%, #{$surface});
+		}
+
+		p {
+			max-width: 72ch;
+			margin: 0;
+		}
+	}
+
+	&__panel-title {
+		margin: 0;
+		font-size: 13px;
+		font-weight: 600;
+
+		&:focus {
+			outline: none;
+		}
+	}
+}
+
+// An inline confirmation ----------------------------------------------------------------
+
+.lw-confirm {
+	&__title {
+		margin: 0;
+		font-size: 13px;
+		font-weight: 600;
+	}
+
+	&__text {
+		margin: 0;
+	}
+
+	&__actions {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: $gap-sm;
+	}
+}
+
+// The backups there --------------------------------------------------------------------
+
+.lw-remote-files__list {
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+	padding: 0;
+	border: 1px solid $stroke-weak;
+	border-radius: $radius;
+	list-style: none;
+}
+
+.lw-remote-files__row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 14px;
+	align-items: center;
+	padding: 8px 8px 8px 12px;
+
+	& + & {
+		border-top: 1px solid $stroke-weak;
+	}
+
+	&.is-confirm {
+		background: color-mix(in srgb, #{$error} 7%, #{$surface});
+	}
+
+	.lw-confirm__text {
+		flex: 1 1 14rem;
+		color: $text;
+		font-size: 12px;
+	}
+}
+
+.lw-remote-files__name {
+	display: flex;
+	flex: 1 1 16rem;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	min-width: 0;
+
+	code {
+		padding: 0;
+		background: none;
+		font-size: 12px;
+		overflow-wrap: anywhere;
+	}
+}
+
+.lw-remote-files__meta {
+	color: $muted;
+	font-size: 12px;
+	white-space: nowrap;
+}
+
+.lw-remote-files__empty {
+	color: $muted;
+}
+
+// The edit form (in place of the row) ----------------------------------------------------
+
+.lw-dest-form {
+	&__name {
+		width: min(100%, 340px);
+	}
+
+	&__error {
+		margin: 4px 0 0;
+		color: $error;
+		font-size: 12px;
+	}
+
+	&__name.is-invalid .components-text-control__input {
+		border-color: $error;
+		box-shadow: 0 0 0 1px $error;
+	}
+
+	&__body {
+		display: flex;
+		flex-direction: column;
+		gap: 18px;
+		padding: 4px 18px 18px 76px;
+	}
+
+	&__fields {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 14px $gap-lg;
+
+		// The grid spaces the fields, not the rows' separators.
+		.lw-admin-row + .lw-admin-row {
+			padding-top: 0;
+			border-top: 0;
+		}
+	}
+
+	&__field {
+		min-width: 0;
+
+		&.is-wide {
+			grid-column: 1 / -1;
+		}
+	}
+
+	&__advanced {
+		padding-top: $gap-md;
+		border-top: 1px solid $stroke-weak;
+
+		summary {
+			color: $brand;
+			font-weight: 500;
+			cursor: pointer;
+		}
+
+		&[open] summary {
+			margin-bottom: 14px;
+		}
+
+		.lw-oauth {
+			margin-top: 14px;
+		}
+	}
+
+	&__foot {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 10px;
+		padding-top: 14px;
+		border-top: 1px solid $stroke-weak;
+	}
+
+	&__note {
+		flex: 1 1 260px;
+		margin: 0 0 0 4px;
+		color: $muted;
+		font-size: 12px;
+	}
+}
+
+.lw-connect {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 10px;
+	padding: $gap-lg;
+	border-radius: 6px;
+	background: $brand-soft;
+
+	p {
+		max-width: 62ch;
+		margin: 0;
+	}
+
+	.components-notice {
+		align-self: stretch;
+	}
+}
+
+// The retention sentence: "At most [n] backups, [n] GB, [n] days."
+.lw-keep {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+
+	&__title {
+		margin: 0;
+		font-size: 13px;
+		font-weight: 600;
+	}
+
+	&__sentence {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 8px 10px;
+		color: $muted;
+	}
+
+	&__field {
+		width: 88px;
+	}
+
+	&__help {
+		margin: 0;
+		color: $muted;
+		font-size: 12px;
+	}
+}
+
+.lw-dest-form__fields input,
+.lw-dest-form__fields select,
+.lw-dest-form__name input,
+.lw-keep__field input,
+.lw-dest-form .lw-secret-text textarea {
+	@media (max-width: 600px) {
+		font-size: 16px; // No iOS focus zoom.
+	}
+}
+
+.lw-secret-text textarea {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-size: 12px;
+	line-height: 1.4;
+}
+
+.lw-dest-form .lw-secret-text__file {
+	margin-top: 8px;
+}
+
+// The host key or certificate to confirm (the card's warning panel).
+.lw-host-key {
+	font-size: 12px;
+
+	code {
+		font-size: 12px;
+		overflow-wrap: anywhere;
+	}
+
+	&__prints {
+		display: grid;
+		grid-template-columns: max-content minmax(0, 1fr);
+		gap: 4px 12px;
+		margin: 0;
+
+		dd {
+			margin: 0;
+			min-width: 0;
+		}
+	}
+
+	&__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: $gap-sm;
+	}
+
+	@media (max-width: 600px) {
+		&__prints {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+}
+
+.lw-oauth {
+	display: grid;
+	gap: 12px;
+	font-size: 13px;
+}
+
+.lw-oauth__intro {
+	margin: 0; // The panel's grid gap spaces it; its 13px text is the panel's.
+}
+
+.lw-oauth__uri {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+
+	code {
+		overflow-wrap: anywhere;
+		padding: 6px 8px;
+		font-size: 13px;
+	}
+}
+
+.lw-oauth__steps {
+	margin: 0 0 0 20px;
+	line-height: 1.6;
+}
+
+.lw-oauth .components-notice,
+.lw-oauth__console,
+.lw-oauth__account {
+	margin: 0;
+}
+
+.lw-oauth__account {
+	font-weight: 600;
+}
+
+// The add shelf --------------------------------------------------------------------------
+
+.lw-add {
+	display: flex;
+	flex-direction: column;
+	gap: $gap-lg;
+	padding: 18px 18px 20px;
+	border: 1px solid $stroke;
+	border-radius: $radius-lg;
+	background: $surface;
+	scroll-margin-top: $gap-lg;
+	container-type: inline-size;
+
+	&__title {
+		margin: 0;
+		font-size: 14px;
+		font-weight: 600;
+
+		&:focus {
+			outline: none;
+		}
+
+		&:focus-visible {
+			outline: 2px solid $brand;
+			outline-offset: 2px;
+		}
+	}
+
+	&__intro,
+	&__full {
+		margin: 2px 0 0;
+		color: $muted;
+	}
+
+	&__full {
+		color: $warning;
+		font-weight: 500;
+	}
+
+	// Three lists side by side; two (the long S3 list on the right) in a
+	// mid-wide section; one on a narrow one. Sized by the section itself.
+	&__groups {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: $gap-md 20px;
+		align-items: start;
+	}
+
+	&__group {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		min-width: 0;
+	}
+
+	&__group-title {
+		margin: 0;
+		color: $muted;
+		font-size: 11px;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+
+	&__note {
+		margin: 0;
+		color: $muted;
+		font-size: 12px;
+	}
+
+	&__list {
+		margin: 4px 0 0;
+		padding: 0;
+		overflow: hidden;
+		border: 1px solid $stroke;
+		border-radius: 6px;
+		list-style: none;
+
+		> li {
+			margin: 0;
+			border-top: 1px solid $stroke-weak;
+
+			&:first-child {
+				border-top: 0;
+			}
+		}
+	}
+
+	> .lw-dest.is-draft {
+		margin-top: 4px;
+	}
+}
+
+// A place on the shelf: a full-width row of its list (pressed while its
+// draft is open).
+.lw-shelf-place {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+	min-height: 42px;
+	margin: 0;
+	padding: 8px 10px 8px 12px;
+	border: 0;
+	border-radius: 0;
+	background: $surface;
+	color: $text;
+	font: inherit;
+	font-weight: 500;
+	line-height: 1.3;
+	text-align: left;
+	cursor: pointer;
+
+	&:hover {
+		background: $brand-soft;
+	}
+
+	&:focus {
+		outline: none;
+	}
+
+	&:focus-visible {
+		outline: 2px solid $brand;
+		outline-offset: -2px;
+	}
+
+	&[aria-pressed="true"] {
+		background: $brand-soft;
+		box-shadow: inset 3px 0 0 $brand;
+	}
+
+	&[aria-disabled="true"] {
+		cursor: not-allowed;
+
+		.lw-dest-icon,
+		.lw-shelf-place__label {
+			opacity: 0.55;
+		}
+
+		&:hover {
+			background: $surface;
+		}
+	}
+
+	&__label {
+		flex: 1;
+		min-width: 0;
+		overflow-wrap: anywhere;
+	}
+
+	&__reason {
+		display: block;
+		color: $muted;
+		font-size: 12px;
+		font-weight: 400;
+	}
+
+	&__go {
+		flex: none;
+		fill: $muted;
+	}
+
+	&[aria-disabled="true"] &__go {
+		visibility: hidden;
+	}
+}
+
+@container (max-width: 880px) {
+	.lw-add__groups {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.lw-add__group.is-keys {
+		grid-row: span 2;
+	}
+}
+
+@container (max-width: 540px) {
+	.lw-add__groups {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.lw-add__group.is-keys {
+		grid-row: auto;
+	}
+}
+
+@media (max-width: 782px) {
+	.lw-dest__row {
+		grid-template-columns: 40px minmax(0, 1fr);
+	}
+
+	.lw-dest__tile {
+		width: 40px;
+		height: 40px;
+	}
+
+	.lw-dest__actions {
+		grid-column: 1 / -1;
+		justify-content: flex-start;
+	}
+
+	.lw-dest__panel,
+	.lw-dest__notices,
+	.lw-dest-form__body {
+		padding-left: 18px;
+	}
+
+	.lw-dest-form__fields {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}

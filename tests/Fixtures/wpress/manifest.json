@@ -1,0 +1,58 @@
+{
+    "password": "lw-fixture-pass",
+    "mtime": 1767225600,
+    "entries": [
+        {
+            "name": "hello.txt",
+            "size": 14,
+            "sha1": "fa6f554637c530ce8d4ba5d772065fe5d7bccd68"
+        },
+        {
+            "name": "empty.txt",
+            "size": 0,
+            "sha1": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+        },
+        {
+            "name": "uploads/2026/10/ékezetes fájl.txt",
+            "size": 32,
+            "sha1": "cde6167f0765250c89f29e06d15deaf938c44430"
+        },
+        {
+            "name": "plugins/sample/big.bin",
+            "size": 600000,
+            "sha1": "305e6b98ac1203bebf8c7b568472df01e9d8f9ef"
+        },
+        {
+            "name": "database.sql",
+            "size": 26,
+            "sha1": "afa293435374e3d5bd2c71479b92f6ab771db040"
+        }
+    ],
+    "archives": {
+        "plain.wpress": {
+            "compression": "",
+            "encrypted": false,
+            "multisite": false
+        },
+        "gzip.wpress": {
+            "compression": "gzip",
+            "encrypted": false,
+            "multisite": false
+        },
+        "bzip2.wpress": {
+            "compression": "bzip2",
+            "encrypted": false,
+            "multisite": false
+        },
+        "encrypted.wpress": {
+            "compression": "",
+            "encrypted": true,
+            "multisite": false
+        },
+        "encrypted-gzip.wpress": {
+            "compression": "gzip",
+            "encrypted": true,
+            "multisite": true
+        }
+    }
+}

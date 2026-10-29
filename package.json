@@ -1,0 +1,49 @@
+{
+  "name": "lw-migration-admin",
+  "version": "0.0.0",
+  "private": true,
+  "description": "LW Migration admin UI (React, WordPress components).",
+  "license": "GPL-2.0-or-later",
+  "scripts": {
+    "build": "wp-scripts build",
+    "start": "wp-scripts start",
+    "lint:js": "wp-scripts lint-js src tests/E2E/browser",
+    "i18n": "wp i18n make-pot . languages/lw-migration.pot --slug=lw-migration --domain=lw-migration --exclude=node_modules,vendor,src,tests,docs,bin,.superpowers,.playwright-results && msgmerge --quiet --update --backup=none --no-fuzzy-matching languages/lw-migration-hu_HU.po languages/lw-migration.pot && msgfmt languages/lw-migration-hu_HU.po -o languages/lw-migration-hu_HU.mo && wp i18n make-json languages --no-purge",
+    "test:ui": "bash bin/test-ui.sh",
+    "test": "wp-scripts test-unit-js --dir src"
+  },
+  "devDependencies": {
+    "@playwright/test": "~1.63.0",
+    "@wordpress/scripts": "^36.0.0",
+    "vite": "^8.3.3",
+    "vitest": "^5.0.3"
+  },
+  "dependencies": {
+    "@lwplugins/data-table": "^0.3.0",
+    "@wordpress/a11y": "^4.57.0",
+    "@wordpress/api-fetch": "^7.56.0",
+    "@wordpress/components": "^41.0.0",
+    "@wordpress/compose": "^8.9.0",
+    "@wordpress/data": "^10.56.0",
+    "@wordpress/date": "^5.56.0",
+    "@wordpress/element": "^8.8.0",
+    "@wordpress/i18n": "^6.29.0",
+    "@wordpress/icons": "^17.0.0",
+    "@wordpress/keycodes": "^4.56.0",
+    "@wordpress/notices": "^5.56.0",
+    "@wordpress/primitives": "^4.56.0",
+    "@wordpress/ui": "^0.23.0",
+    "@wordpress/url": "^4.56.0"
+  },
+  "overrides": {
+    "serialize-javascript": "^7.0.5",
+    "sockjs": {
+      "uuid": "^11.1.1"
+    },
+    "markdownlint-cli": {
+      "js-yaml": "^5.4.1",
+      "smol-toml": "^1.9.0"
+    },
+    "katex": "^0.18.2"
+  }
+}

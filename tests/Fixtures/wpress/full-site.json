@@ -1,0 +1,9 @@
+{
+    "siteUrl": "http://site-a.test",
+    "post": "Reference Fixture Post",
+    "upload": "uploads/2026/10/ref.txt",
+    "plugin": "lwm-ref-sample/lwm-ref-sample.php",
+    "theme": "lwm-ref-theme",
+    "muPlugin": "lwm-ref-mu.php",
+    "user": "editor1"
+}

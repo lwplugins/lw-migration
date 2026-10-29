@@ -1,0 +1,71 @@
+name: E2E
+
+# Optional and manual: throwaway WordPress sites (WP-CLI + a Docker database),
+# the PHPUnit e2e suite and the Playwright admin tests. Slow, so it is not part
+# of CI and never gates a release; run it from the Actions tab before a release
+# that touches import, export, connections or the admin screen.
+on:
+  workflow_dispatch:
+    inputs:
+      network:
+        description: 'Also build the multisite test networks'
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  e2e:
+    name: E2E (PHPUnit + Playwright)
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    env:
+      LWM_E2E_NETWORK: ${{ inputs.network && '1' || '' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
+        with:
+          php-version: '8.3'
+          extensions: bz2, mysqli, sodium, pcntl, posix
+          tools: composer, wp-cli
+          coverage: none
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      # Never under /tmp: the backups-folder rules treat it as a system tree.
+      - name: Work folder
+        run: echo "LWM_E2E_DIR=$RUNNER_TEMP/lwm-e2e" >> "$GITHUB_ENV"
+
+      - name: Install dependencies
+        run: |
+          composer install --no-progress --prefer-dist
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: PHPUnit end-to-end suite
+        run: bash bin/test-wp.sh
+
+      - name: Playwright admin tests
+        run: npm run test:ui
+
+      - name: Keep the Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-results
+          # The tests download a backup into this folder; never publish one.
+          path: |
+            .playwright-results
+            !.playwright-results/**/*.wpress
+            !.playwright-results/*.wpress
+          retention-days: 7

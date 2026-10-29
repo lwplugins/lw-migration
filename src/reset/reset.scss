@@ -1,0 +1,438 @@
+// Reset: the section lead, a warning, "What do you want to reset?" as five choice tiles,
+// then one plan panel: on the left the layers of the site (what goes is
+// hatched and struck through, what no reset touches sits under a rule), on
+// the right the numbered steps and the one destructive button. Two columns,
+// stacked under 900 px. Tokens: ../backups/_tokens.scss. Type follows the
+// shared LW scale: section titles 14-15 px, secondary 12 px, uppercase tags
+// 11 px; core controls keep their own sizes.
+
+@use "../backups/tokens" as *;
+
+$success: var(--wpds-color-foreground-content-success, #007f30);
+$success-soft: color-mix(in srgb, #{$success} 10%, #{$surface});
+$error-soft: color-mix(in srgb, #{$error} 7%, #{$surface});
+$error-line: color-mix(in srgb, #{$error} 30%, #{$surface});
+$base-bg: color-mix(in srgb, #{$brand} 6%, #{$surface});
+
+.lw-reset {
+	display: flex;
+	flex-direction: column;
+	gap: $gap-lg;
+	min-width: 0;
+}
+
+.lw-reset-lead {
+	display: flex;
+	flex-direction: column;
+	gap: $gap-md;
+}
+
+// Choices ---------------------------------------------------------------------
+
+.lw-reset-pick__title {
+	margin: 0 0 10px;
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 1.3;
+}
+
+.lw-reset-choices {
+	display: grid;
+	grid-template-columns: repeat(5, minmax(0, 1fr));
+	gap: $gap-sm;
+}
+
+.lw-reset-choice {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: $gap-sm;
+	min-width: 0;
+	min-height: 96px;
+	margin: 0;
+	padding: $gap-md;
+	border: 1px solid $stroke;
+	border-radius: $radius-lg;
+	background: $surface;
+	color: $text;
+	font: inherit;
+	text-align: left;
+	cursor: pointer;
+
+	:where(svg) {
+		flex: none;
+		fill: currentColor;
+		color: $muted;
+	}
+
+	&:hover {
+		border-color: $error;
+	}
+
+	&:focus {
+		outline: none;
+	}
+
+	&:focus-visible {
+		outline: 2px solid $brand;
+		outline-offset: 2px;
+	}
+
+	&[aria-checked="true"] {
+		border-color: $error;
+		background: $error-soft;
+		box-shadow: inset 0 0 0 1px $error;
+
+		:where(svg) {
+			color: $error;
+		}
+	}
+
+	&[aria-disabled="true"] {
+		opacity: 0.55;
+		cursor: not-allowed;
+
+		&:hover {
+			border-color: $stroke;
+		}
+	}
+
+	&.is-loading {
+		cursor: default;
+	}
+
+	&__title {
+		font-weight: 600;
+		line-height: 1.3;
+	}
+
+	&__line {
+		margin-top: auto;
+		color: $muted;
+		font-size: 12px;
+		line-height: 1.4;
+		overflow-wrap: anywhere;
+	}
+}
+
+// Plan panel ------------------------------------------------------------------
+
+.lw-reset-plan {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	border: 1px solid $stroke;
+	border-radius: $radius-lg;
+	background: $surface;
+
+	&__part {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+		min-width: 0;
+		padding: 18px 20px 20px;
+
+		+ .lw-reset-plan__part {
+			border-left: 1px solid $stroke-weak;
+		}
+	}
+
+	&__title {
+		margin: 0;
+		font-size: 14px;
+		font-weight: 600;
+		line-height: 1.3;
+	}
+
+	&__sub {
+		margin: -8px 0 0;
+		color: $muted;
+		font-size: 12px;
+	}
+
+	&__idle {
+		grid-column: 1 / -1;
+		margin: 0;
+		padding: 28px 20px;
+		color: $muted;
+	}
+}
+
+// The layers of the site ------------------------------------------------------
+
+.lw-reset-layers {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.lw-reset-layer {
+	display: grid;
+	grid-template-columns: 24px minmax(0, 1fr) auto;
+	align-items: start;
+	gap: 10px;
+	margin: 0;
+	padding: 10px $gap-md;
+	border: 1px solid $stroke-weak;
+	border-radius: 6px;
+	background: $surface;
+
+	:where(svg) {
+		fill: currentColor;
+		color: $muted;
+	}
+
+	&__what {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		min-width: 0;
+	}
+
+	&__name {
+		font-weight: 600;
+		overflow-wrap: anywhere;
+	}
+
+	&__line {
+		color: $muted;
+		font-size: 12px;
+		overflow-wrap: anywhere;
+	}
+
+	// Hatched and struck through: it goes. The tag says it in words too.
+	&.is-goes {
+		border-color: $error-line;
+		background: repeating-linear-gradient(-45deg, $error-soft 0 8px, $surface 8px 16px);
+
+		:where(svg) {
+			color: $error;
+		}
+
+		.lw-reset-layer__name {
+			text-decoration: line-through;
+			text-decoration-color: $error;
+			text-decoration-thickness: 2px;
+		}
+	}
+
+	&.is-base {
+		border-color: transparent;
+		background: $base-bg;
+
+		:where(svg) {
+			color: $brand;
+		}
+
+		.lw-reset-layer__name {
+			font-weight: 500;
+		}
+	}
+}
+
+.lw-reset-tag {
+	align-self: start;
+	padding: 1px 8px;
+	border-radius: 99px;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.03em;
+	text-transform: uppercase;
+	white-space: nowrap;
+
+	&.is-goes {
+		background: $error;
+		color: #fff;
+	}
+
+	&.is-stays {
+		background: $success-soft;
+		color: $success;
+	}
+
+	// Stays on disk, but out of use: neutral, neither going nor kept as is.
+	&.is-disk {
+		background: $track;
+		color: $text;
+	}
+}
+
+.lw-reset-bedrock {
+	margin: 6px 0 0;
+	padding-top: $gap-sm;
+	border-top: 2px solid $stroke;
+	color: $muted;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.lw-reset-warnline {
+	display: flex;
+	gap: $gap-sm;
+	margin: 0;
+	padding: 10px $gap-md;
+	border-radius: $radius;
+	background: $warning-bg;
+	font-size: 12px;
+	overflow-wrap: anywhere;
+
+	:where(svg) {
+		flex: none;
+		fill: currentColor;
+		color: $warning;
+	}
+}
+
+// Steps -----------------------------------------------------------------------
+
+.lw-reset-run {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+
+.lw-reset-steps {
+	display: flex;
+	flex-direction: column;
+	gap: $gap-lg;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.lw-reset-step {
+	display: grid;
+	grid-template-columns: 26px minmax(0, 1fr);
+	gap: 10px;
+	margin: 0;
+
+	&__mark {
+		display: grid;
+		place-items: center;
+		width: 24px;
+		height: 24px;
+		border: 1.5px solid $muted;
+		border-radius: 50%;
+		color: $muted;
+		font-size: 12px;
+		font-weight: 600;
+
+		:where(svg) {
+			fill: currentColor;
+		}
+	}
+
+	&.is-done .lw-reset-step__mark {
+		border-color: $success;
+		background: $success;
+		color: #fff;
+	}
+
+	&__body {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		min-width: 0;
+	}
+
+	&__help {
+		margin: 0;
+		color: $muted;
+		font-size: 12px;
+	}
+
+	&__error {
+		margin: 0;
+		color: $error;
+		font-size: 12px;
+	}
+
+	[aria-invalid="true"].components-text-control__input {
+		border-color: $error;
+		box-shadow: 0 0 0 1px $error;
+	}
+
+	code {
+		overflow-wrap: anywhere;
+	}
+}
+
+.lw-reset-file {
+	font-family: $mono;
+	overflow-wrap: anywhere;
+}
+
+.lw-reset-go {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: $gap-sm;
+	padding-top: 14px;
+	border-top: 1px solid $stroke-weak;
+
+	&__note {
+		margin: 0;
+		color: $muted;
+		font-size: 12px;
+	}
+}
+
+.lw-reset-locked {
+	display: flex;
+	gap: 10px;
+	padding: $gap-md 14px;
+	border-radius: $radius;
+	background: $error-soft;
+
+	:where(svg) {
+		flex: none;
+		fill: currentColor;
+		color: $error;
+	}
+
+	p {
+		margin: 0;
+	}
+
+	&:focus {
+		outline: none;
+	}
+
+	&:focus-visible {
+		outline: 2px solid $brand;
+		outline-offset: 2px;
+	}
+}
+
+// The done screen (ResetResult).
+.lw-result__reload {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 16px;
+}
+
+@media (max-width: 900px) {
+	.lw-reset-choices {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.lw-reset-plan {
+		grid-template-columns: 1fr;
+
+		&__part + .lw-reset-plan__part {
+			border-top: 1px solid $stroke-weak;
+			border-left: 0;
+		}
+	}
+}
+
+@media (max-width: 782px) {
+	.lw-reset-choices {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}

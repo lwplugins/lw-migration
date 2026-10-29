@@ -1,0 +1,144 @@
+name: Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  # Runs on every push to main (and on manual runs). CI and the release
+  # below only run when the plugin header carries a version that has no
+  # GitHub release yet, so a follow-up fix can still complete a release.
+  precheck:
+    runs-on: ubuntu-latest
+    outputs:
+      release_needed: ${{ steps.check.outputs.release_needed }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Is this version already released?
+        id: check
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION=$(grep -m1 "Version:" lw-migration.php | sed 's/.*Version:[[:space:]]*//' | tr -d '[:space:]')
+          if gh release view "v$VERSION" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "release_needed=false" >> "$GITHUB_OUTPUT"
+            echo "v$VERSION is already released - nothing to do"
+          else
+            echo "release_needed=true" >> "$GITHUB_OUTPUT"
+            echo "v$VERSION has no release yet - running CI and the release"
+          fi
+
+  # The same checks as CI. A release, and the tag it creates, only happen
+  # when all of them pass.
+  ci:
+    needs: precheck
+    if: needs.precheck.outputs.release_needed == 'true'
+    uses: ./.github/workflows/ci.yml
+
+  release:
+    needs: ci
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from plugin file
+        id: get_version
+        run: |
+          VERSION=$(grep -m1 "Version:" lw-migration.php | sed 's/.*Version:[[:space:]]*//' | tr -d '[:space:]')
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Extracted version: $VERSION"
+
+      - name: Check if release exists
+        id: check_release
+        env:
+          VERSION: ${{ steps.get_version.outputs.version }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if gh release view "v$VERSION" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "Release v$VERSION already exists — skipping"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "Release v$VERSION does not exist — will create (even if the tag was pushed manually)"
+          fi
+
+      - name: Setup PHP
+        if: steps.check_release.outputs.exists == 'false'
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
+        with:
+          php-version: '8.2'
+
+      - name: Install production dependencies
+        if: steps.check_release.outputs.exists == 'false'
+        run: composer install --no-dev --optimize-autoloader --no-interaction
+
+      # The admin is a React app: build/ is committed (so Composer and git
+      # installs work) and rebuilt here from src/ so the ZIP always matches it.
+      - name: Setup Node
+        if: steps.check_release.outputs.exists == 'false'
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Build the admin
+        if: steps.check_release.outputs.exists == 'false'
+        run: npm ci && npm run build
+
+      - name: Create release ZIP
+        if: steps.check_release.outputs.exists == 'false'
+        env:
+          VERSION: ${{ steps.get_version.outputs.version }}
+        run: |
+          mkdir -p dist/lw-migration
+          # Every path-shaped exclude is anchored with a leading slash so it
+          # matches the repository root only: an unanchored 'tests', 'src' or
+          # 'bin' also strips vendor/*/src and vendor/bin from the shipped ZIP.
+          # vendor/ ships (production dependencies only, optimized autoloader)
+          # without composer/installers, a Composer plugin used only when the
+          # package is installed with Composer, never at run time. composer.json
+          # ships with vendor/ so the bundled dependencies can be checked;
+          # src/ is the React source of the committed build/.
+          # Keep this list in step with the export-ignore lines in .gitattributes.
+          rsync -a --exclude='/.git' --exclude='/.github' --exclude='/dist' --exclude='/builds' \
+            --exclude='/composer.lock' --exclude='/phpcs.xml.dist' \
+            --exclude='/node_modules' --exclude='/src' --exclude='/package.json' --exclude='/package-lock.json' --exclude='/vitest.config.mjs' --exclude='/.gitignore' --exclude='/.gitattributes' \
+            --exclude='/tests' --exclude='/docs' --exclude='/.claude' --exclude='/.superpowers' \
+            --exclude='/phpstan.neon.dist' --exclude='/phpstan-baseline.neon' \
+            --exclude='/phpstan-bootstrap.php' --exclude='/phpunit.xml.dist' --exclude='/stubs' \
+            --exclude='/bin' --exclude='/vendor/composer/installers' --exclude='/.phpunit.cache' --exclude='/.phpunit.result.cache' --exclude='/.phpcs.cache' \
+            --exclude='/.playwright-results' --exclude='/playwright.config.*' --exclude='/.nvmrc' \
+            --exclude='*.log' --exclude='.DS_Store' ./ dist/lw-migration/
+          cd dist && zip -r "lw-migration-${VERSION}.zip" lw-migration/
+
+      - name: Create tag and release
+        if: steps.check_release.outputs.exists == 'false'
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.get_version.outputs.version }}
+        with:
+          tag_name: v${{ steps.get_version.outputs.version }}
+          name: v${{ steps.get_version.outputs.version }}
+          body: |
+            ## LW Migration v${{ steps.get_version.outputs.version }}
+
+            See [readme.txt](https://github.com/lwplugins/lw-migration/blob/main/readme.txt) for changelog.
+          files: |
+            dist/lw-migration-${{ steps.get_version.outputs.version }}.zip
+          draft: false
+          prerelease: false
+          generate_release_notes: true

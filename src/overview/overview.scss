@@ -1,0 +1,534 @@
+// Overview (the plugin's home page): the status line is the one bold
+// element, then what needs a look, three action cards, the history chart and
+// two columns of lists. Tokens as in admin.scss (WPDS variables, fallbacks
+// for older WordPress); the accent is the plugin's own theme colour.
+
+$surface: var(--wpds-color-background-surface-neutral-strong, #fff);
+$stroke: var(--wpds-color-stroke-surface-neutral, #ddd);
+$stroke-weak: var(--wpds-color-stroke-surface-neutral-weak, #f0f0f0);
+$text: var(--wpds-color-foreground-content-neutral, #1e1e1e);
+$muted: var(--wpds-color-foreground-content-neutral-weak, #707070);
+$brand: var(--wp-admin-theme-color, #3858e9);
+$warning: var(--wpds-color-foreground-content-warning, #926300);
+$warning-bg: var(--wpds-color-background-surface-warning-weak, #fef8ee);
+$error: var(--wpds-color-foreground-content-error, #cc1818);
+$track: var(--wpds-color-background-track-neutral-weak, #f0f0f0);
+$radius: var(--wpds-border-radius-md, 4px);
+$radius-lg: var(--wpds-border-radius-lg, 8px);
+$gap-sm: var(--wpds-dimension-gap-sm, 8px);
+$gap-md: var(--wpds-dimension-gap-md, 12px);
+$gap-lg: var(--wpds-dimension-gap-lg, 16px);
+$gap-xl: var(--wpds-dimension-gap-xl, 24px);
+
+.lw-overview {
+	display: flex;
+	flex-direction: column;
+	gap: $gap-xl;
+	min-width: 0;
+
+	&__num {
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+	}
+
+	&__foot {
+		margin: 0;
+		font-size: 12px;
+		color: $muted;
+		overflow-wrap: anywhere;
+	}
+
+	&__cols {
+		display: grid;
+		grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+		gap: $gap-lg;
+		align-items: start;
+	}
+
+	&__stack {
+		display: flex;
+		flex-direction: column;
+		gap: $gap-lg;
+		min-width: 0;
+	}
+}
+
+// Status ---------------------------------------------------------------------
+
+.lw-overview-status {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr);
+	gap: $gap-xl;
+	align-items: center;
+
+	&__ring {
+		width: 108px;
+		height: 108px;
+
+		svg {
+			display: block;
+			width: 100%;
+			height: 100%;
+		}
+	}
+
+	h2 {
+		margin: 0 0 6px;
+		font-size: 22px;
+		line-height: 1.25;
+		font-weight: 600;
+		text-wrap: balance;
+	}
+
+	&__lead {
+		max-width: 68ch;
+		margin: 0;
+		font-size: 14px;
+		color: $muted;
+	}
+
+	&__running {
+		display: flex;
+		align-items: baseline;
+		gap: $gap-sm;
+		margin: 10px 0 0;
+		font-size: 13px;
+		font-weight: 600;
+	}
+
+	&__dot {
+		flex: none;
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		background: $brand;
+	}
+
+	&__facts {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px 22px;
+		margin-top: 12px;
+		font-size: 13px;
+		color: $muted;
+
+		b {
+			color: $text;
+		}
+
+		> span {
+			display: inline-flex;
+			align-items: center;
+			gap: 4px;
+		}
+	}
+
+	&__safe svg {
+		color: $brand;
+	}
+
+	&__unsafe {
+		color: $warning;
+
+		svg {
+			color: $warning;
+		}
+	}
+}
+
+.lw-overview-ring {
+	&__track,
+	&__value {
+		fill: none;
+		stroke-width: 9;
+	}
+
+	&__track {
+		stroke: $track;
+	}
+
+	&__value {
+		stroke: $brand;
+		stroke-linecap: round;
+
+		&.is-warning {
+			stroke: $warning;
+		}
+	}
+
+	&__count {
+		fill: $text;
+		font-size: 18px;
+		font-weight: 700;
+		font-variant-numeric: tabular-nums;
+	}
+
+	&__label {
+		fill: $muted;
+		font-size: 11px;
+	}
+}
+
+// Needs a look ---------------------------------------------------------------
+
+.lw-overview-attention {
+	display: flex;
+	gap: $gap-md;
+	align-items: flex-start;
+	padding: 14px 16px;
+	border: 1px solid color-mix(in srgb, #{$warning} 30%, transparent);
+	border-radius: $radius-lg;
+	background: $warning-bg;
+	color: $text;
+	font-size: 13px;
+
+	> svg {
+		flex: none;
+		color: $warning;
+	}
+
+	ul {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		gap: $gap-sm;
+		min-width: 0;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	li {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px $gap-md;
+		align-items: baseline;
+		margin: 0;
+	}
+
+	a {
+		font-weight: 600;
+		color: $brand;
+	}
+}
+
+// Quick actions -------------------------------------------------------------
+
+.lw-overview-actions {
+	display: grid;
+	grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr);
+	gap: $gap-lg;
+
+	&.has-two {
+		grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+	}
+}
+
+.lw-overview-action {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	min-width: 0;
+	padding: 20px;
+	border: 1px solid $stroke-weak;
+	border-radius: $radius-lg;
+	background: $surface;
+
+	h3 {
+		display: flex;
+		align-items: center;
+		gap: $gap-sm;
+		margin: 0;
+		font-size: 15px;
+		font-weight: 600;
+
+		svg {
+			flex: none;
+			color: $brand;
+		}
+	}
+
+	p {
+		margin: 0;
+		font-size: 13px;
+		color: $muted;
+	}
+
+	&__note {
+		font-size: 12px;
+	}
+
+	&__buttons {
+		display: flex;
+		flex-wrap: wrap;
+		gap: $gap-sm;
+		align-items: center;
+		margin-top: auto;
+		padding-top: 6px;
+	}
+
+	.components-notice {
+		margin: 0;
+	}
+}
+
+.lw-overview-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: $gap-sm;
+}
+
+.lw-overview-chip {
+	padding: 4px 12px 4px 8px;
+	border: 1px solid $stroke;
+	border-radius: 999px;
+	background: $surface;
+
+	&.is-off {
+		opacity: 0.6;
+	}
+}
+
+// History --------------------------------------------------------------------
+
+.lw-overview-history__range {
+	width: 220px;
+	max-width: 100%;
+}
+
+.lw-overview-chart {
+	overflow-x: auto;
+
+	// Drawn 1:1 in CSS pixels at the box's own width (HistoryChart measures
+	// it), so the axis text stays 11px instead of growing with the page.
+	svg {
+		display: block;
+	}
+
+	// The loading placeholder: the drawing's own 190px height.
+	&.is-skeleton .lw-skel {
+		display: block;
+		min-width: 520px;
+		height: 190px;
+	}
+
+	&__grid {
+		stroke: $stroke-weak;
+		stroke-width: 1;
+	}
+
+	&__base {
+		stroke: $stroke;
+		stroke-width: 1;
+	}
+
+	&__axis,
+	&__day {
+		fill: $muted;
+		font-size: 11px;
+		font-variant-numeric: tabular-nums;
+	}
+
+	&__bar {
+		&.is-cloud {
+			fill: $brand;
+		}
+
+		&.is-local {
+			fill: $muted;
+		}
+	}
+
+	&__failed path {
+		fill: none;
+		stroke: $error;
+		stroke-width: 2.5;
+		stroke-linecap: round;
+	}
+}
+
+.lw-overview-legend {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px 20px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	font-size: 12px;
+	color: $muted;
+
+	li {
+		margin: 0;
+	}
+
+	i {
+		display: inline-block;
+		width: 12px;
+		height: 12px;
+		margin-right: 6px;
+		border-radius: 2px;
+		vertical-align: -1px;
+
+		&.is-cloud {
+			background: $brand;
+		}
+
+		&.is-local {
+			background: $muted;
+		}
+
+		&.is-failed {
+			background: $error;
+		}
+	}
+}
+
+// Lists ------------------------------------------------------------------------
+
+.lw-overview-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	> li {
+		display: grid;
+		grid-template-columns: 32px minmax(0, 1fr) auto;
+		gap: $gap-md;
+		align-items: center;
+		margin: 0;
+		padding: $gap-md 0;
+		border-top: 1px solid $stroke-weak;
+
+		&:first-child {
+			padding-top: 0;
+			border-top: 0;
+		}
+
+		&:last-child {
+			padding-bottom: 0;
+		}
+	}
+
+	&__icon {
+		display: grid;
+		place-items: center;
+		width: 32px;
+		height: 32px;
+		border-radius: $radius;
+		background: $track;
+		color: $brand;
+	}
+
+	&__text {
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+	}
+
+	&__name {
+		font-size: 13px;
+		font-weight: 600;
+		overflow-wrap: anywhere;
+	}
+
+	&__meta {
+		font-size: 12px;
+		color: $muted;
+		overflow-wrap: anywhere;
+	}
+}
+
+.lw-overview-empty {
+	display: flex;
+	flex-direction: column;
+	gap: $gap-md;
+	align-items: flex-start;
+
+	p {
+		max-width: 60ch;
+		margin: 0;
+		font-size: 13px;
+		color: $muted;
+	}
+}
+
+// Next run -------------------------------------------------------------------
+
+.lw-overview-next {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+
+	&__when {
+		font-size: 20px;
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.lw-overview__foot {
+		margin-top: $gap-sm;
+	}
+}
+
+.lw-overview-dots {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	margin: 10px 0 0;
+	padding: 0;
+	list-style: none;
+
+	li {
+		width: 14px;
+		height: 14px;
+		margin: 0;
+		border-radius: 3px;
+		background: $brand;
+
+		&.is-partial {
+			background: $warning;
+		}
+
+		&.is-failed {
+			background: $error;
+		}
+	}
+}
+
+// Narrow screens ----------------------------------------------------------------
+
+@media (max-width: 1100px) {
+	.lw-overview-actions,
+	.lw-overview-actions.has-two {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+
+		> :first-child {
+			grid-column: 1 / -1;
+		}
+	}
+
+	.lw-overview__cols {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+
+@media (max-width: 782px) {
+	.lw-overview-actions,
+	.lw-overview-actions.has-two {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.lw-overview-status {
+		grid-template-columns: minmax(0, 1fr);
+		gap: $gap-md;
+
+		&__ring {
+			width: 84px;
+			height: 84px;
+		}
+
+		h2 {
+			font-size: 20px;
+		}
+	}
+}

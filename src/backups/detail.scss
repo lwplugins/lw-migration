@@ -1,0 +1,167 @@
+// The chosen backup's panel: its head and actions, details, copies, transfer
+// links and contents. Tokens: _tokens.scss.
+
+@use "tokens" as *;
+
+.lw-bk-detail {
+	position: sticky;
+	top: $gap-lg;
+	min-width: 0;
+	border: 1px solid $stroke-weak;
+	border-radius: $radius-lg;
+	background: $surface;
+
+	&__top {
+		padding: $gap-lg 20px $gap-md;
+		border-bottom: 1px solid $stroke-weak;
+	}
+
+	&__name {
+		margin: 0;
+		font-family: $mono;
+		font-size: 13px;
+		font-weight: 600;
+		overflow-wrap: anywhere;
+	}
+
+	&__meta {
+		margin: 4px 0 0;
+		color: $muted;
+		font-size: 12px;
+	}
+
+	&__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: $gap-sm;
+		margin-top: $gap-md;
+	}
+
+	&__section {
+		display: flex;
+		flex-direction: column;
+		gap: $gap-sm;
+		padding: $gap-md 20px;
+		border-bottom: 1px solid $stroke-weak;
+
+		&:last-child {
+			border-bottom: 0;
+		}
+	}
+
+	&__head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: $gap-sm;
+	}
+
+	&__heading {
+		margin: 0;
+		color: $muted;
+		font-size: 13px;
+		font-weight: 600;
+	}
+
+	&__note {
+		margin: 0;
+		color: $muted;
+		font-size: 12px;
+	}
+
+	&__delete {
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: $gap-md;
+	}
+}
+
+.lw-bk-facts {
+	display: grid;
+	grid-template-columns: 96px minmax(0, 1fr);
+	gap: 4px $gap-md;
+	margin: 0;
+	font-size: 13px;
+
+	dt {
+		color: $muted;
+	}
+
+	dd {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px $gap-sm;
+		margin: 0;
+		overflow-wrap: anywhere;
+	}
+}
+
+.lw-bk-copies {
+	display: flex;
+	flex-direction: column;
+	gap: $gap-sm;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	font-size: 13px;
+
+	li {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: $gap-sm;
+		margin: 0;
+	}
+
+	.lw-bk-disk {
+		color: $muted;
+	}
+}
+
+.lw-bk-parts {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	font-size: 13px;
+
+	li {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		gap: 4px $gap-sm;
+		margin: 0;
+		padding: 4px 0;
+	}
+
+	&__size {
+		color: $muted;
+		font-variant-numeric: tabular-nums;
+	}
+
+	&__bar {
+		grid-column: 1 / -1;
+		height: 4px;
+		overflow: hidden;
+		border-radius: 2px;
+		background: $track;
+
+		span {
+			display: block;
+			height: 100%;
+			background: $brand;
+		}
+	}
+}
+
+// The panel's live links: text Revoke.
+.lw-share-links.is-compact li {
+	padding: 6px 0;
+	font-size: 13px;
+}
+
+// Below the list on narrow screens: it scrolls with the page.
+@media (max-width: 1100px) {
+	.lw-bk-detail {
+		position: static;
+	}
+}

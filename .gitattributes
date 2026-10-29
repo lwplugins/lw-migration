@@ -1,0 +1,26 @@
+* text=auto eol=lf
+*.wpress binary
+*.bin binary
+
+# Dev-only files stay out of the Composer dist and GitHub's "Download ZIP".
+# Keep this list in step with the rsync excludes in .github/workflows/release.yml.
+/tests	export-ignore
+/docs	export-ignore
+/.github	export-ignore
+/bin	export-ignore
+/src	export-ignore
+/.claude	export-ignore
+/.superpowers	export-ignore
+/.gitattributes	export-ignore
+/.gitignore	export-ignore
+/phpcs.xml.dist	export-ignore
+/phpstan.neon.dist	export-ignore
+/phpstan-baseline.neon	export-ignore
+/phpstan-bootstrap.php	export-ignore
+/phpunit.xml.dist	export-ignore
+/package.json	export-ignore
+/package-lock.json	export-ignore
+/vitest.config.mjs	export-ignore
+/composer.lock	export-ignore
+/.playwright-results	export-ignore
+/.phpunit.cache	export-ignore

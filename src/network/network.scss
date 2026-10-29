@@ -1,0 +1,257 @@
+// Network pieces: the site picker (Backup section, schedule editor), the
+// per-site addresses of a restore and the restored sites of its result.
+// Tokens as in admin.scss (WPDS variables, fallbacks for older WordPress).
+
+$surface: var(--wpds-color-background-surface-neutral-strong, #fff);
+$stroke: var(--wpds-color-stroke-surface-neutral, #ddd);
+$stroke-weak: var(--wpds-color-stroke-surface-neutral-weak, #f0f0f0);
+$muted: var(--wpds-color-foreground-content-neutral-weak, #707070);
+$brand: var(--wp-admin-theme-color, #3858e9);
+$brand-dark: var(--wp-admin-theme-color-darker-20, #094d60);
+$error: var(--wpds-color-foreground-content-error, #cc1818);
+$radius: var(--wpds-border-radius-md, 4px);
+$radius-lg: var(--wpds-border-radius-lg, 8px);
+$gap-sm: var(--wpds-dimension-gap-sm, 8px);
+$gap-md: var(--wpds-dimension-gap-md, 12px);
+$gap-lg: var(--wpds-dimension-gap-lg, 16px);
+
+// Site picker ------------------------------------------------------------------
+
+.lw-picker {
+	display: grid;
+	gap: $gap-lg;
+	min-width: 0;
+
+	.components-base-control__help {
+		margin-top: 2px;
+		color: $muted;
+	}
+}
+
+.lw-picker__chosen {
+	display: grid;
+	gap: $gap-sm;
+}
+
+.lw-picker__count {
+	margin: 0;
+	color: $muted;
+	font-size: 13px;
+
+	&.is-invalid {
+		color: $error;
+	}
+
+	&:focus {
+		outline: none;
+	}
+}
+
+// The distinctive piece: the chosen sites as removable chips in the accent colour.
+.lw-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: $gap-sm;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.lw-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 2px;
+	max-width: 100%;
+	margin: 0;
+	padding: 4px 4px 4px 14px;
+	border-radius: 999px;
+	background: $brand;
+	color: #fff;
+	font-size: 13px;
+	line-height: 1.4;
+
+	&__name {
+		min-width: 0;
+		overflow-wrap: anywhere;
+	}
+
+	.components-button.lw-chip__remove {
+		flex-shrink: 0;
+		min-width: 28px;
+		height: 28px;
+		padding: 0;
+		border-radius: 999px;
+		color: #fff;
+
+		&:hover:not(:disabled) {
+			background: $brand-dark;
+			color: #fff;
+		}
+
+		&:focus-visible {
+			box-shadow: 0 0 0 2px #fff, 0 0 0 4px $brand-dark;
+		}
+	}
+}
+
+.lw-picker__list {
+	margin: 0;
+	padding: 0;
+	border: 1px solid $stroke;
+	border-radius: $radius-lg;
+	background: $surface;
+	list-style: none;
+}
+
+.lw-picker__row {
+	margin: 0;
+	padding: $gap-md $gap-lg;
+	border-bottom: 1px solid $stroke-weak;
+	overflow-wrap: anywhere;
+
+	&:last-child {
+		border-bottom: 0;
+	}
+}
+
+.lw-picker__skel-row {
+	display: flex;
+	align-items: center;
+	gap: $gap-md;
+	padding: $gap-md $gap-lg;
+
+	.lw-skel-lines {
+		flex: 1;
+	}
+}
+
+.lw-picker__empty {
+	margin: 0;
+	color: $muted;
+	font-size: 13px;
+}
+
+.lw-picker__pager {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: $gap-md;
+}
+
+.lw-picker__page {
+	color: $muted;
+	font-size: 12px;
+}
+
+// Addresses of a restore into a network ----------------------------------------
+
+.lw-addresses {
+	display: grid;
+	gap: $gap-md;
+	min-width: 0;
+
+	&__title {
+		margin: 0;
+		font-size: 13px;
+		font-weight: 600;
+	}
+
+	&__list {
+		display: grid;
+		gap: $gap-md;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	&__unlisted {
+		margin: 0;
+		color: $muted;
+		font-size: 12px;
+		overflow-wrap: anywhere;
+	}
+}
+
+.lw-address {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.5fr);
+	align-items: center;
+	gap: $gap-md;
+	margin: 0;
+	padding: $gap-md $gap-lg;
+	border: 1px solid $stroke;
+	border-radius: $radius-lg;
+	font-size: 13px;
+
+	> svg {
+		color: $brand;
+	}
+
+	&__from {
+		color: $muted;
+		overflow-wrap: anywhere;
+	}
+
+	&__to {
+		display: grid;
+		justify-items: start;
+		gap: 6px;
+		min-width: 0;
+
+		> .components-base-control {
+			width: 100%;
+		}
+	}
+
+	&__kept {
+		font-weight: 600;
+		overflow-wrap: anywhere;
+	}
+
+	&__error {
+		margin: 0;
+		color: $error;
+		font-size: 12px;
+	}
+
+	&.is-invalid {
+		border-color: $error;
+
+		.components-text-control__input {
+			border-color: $error;
+			box-shadow: 0 0 0 1px $error;
+		}
+	}
+}
+
+@media (max-width: 600px) {
+	.lw-address {
+		grid-template-columns: minmax(0, 1fr);
+		gap: $gap-sm;
+
+		> svg {
+			transform: rotate(90deg);
+		}
+	}
+}
+
+// Restored sites in the result -------------------------------------------------
+
+.lw-result__sites {
+	display: grid;
+	gap: $gap-sm;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	font-size: 14px;
+
+	li {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: $gap-sm;
+		margin: 0;
+		overflow-wrap: anywhere;
+	}
+}

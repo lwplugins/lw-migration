@@ -1,0 +1,50 @@
+{
+	"about": "Export option values the browser checks before sending (src/views/exportRequest.js checkForm/toRequest) and the server refuses (Rest\\JobInput::exportOptions, Export\\ExportOptions::fromArray). Pinned by tests/WordPress/Rest/ExportOptionsCasesTest.php and src/views/exportRequest.test.js, so the two copies of each rule cannot drift apart.",
+	"excludeFiles": {
+		"accepted": [
+			"cache",
+			"uploads/videos",
+			"/uploads/videos/",
+			"plugins\\big",
+			"uploads//2024///01",
+			" uploads/x ",
+			"a..b/c.d",
+			"...",
+			".hidden/file"
+		],
+		"refused": [
+			"../wp-config.php",
+			"uploads/../..",
+			"./uploads",
+			"uploads/.",
+			"a/./b",
+			"/",
+			"//",
+			"\\",
+			"\\..\\x",
+			"..",
+			"."
+		],
+		"serverOnly": [
+			"cache\tx"
+		]
+	},
+	"replace": {
+		"accepted": [
+			[ "old.test", "new.test" ],
+			[ " keep ", "x" ],
+			[ "a", " b " ]
+		],
+		"refused": [
+			[ "old.test", "" ],
+			[ "", "new.test" ],
+			[ "old.test", "  " ],
+			[ "  ", "new.test" ],
+			[ "\t", "new.test" ]
+		],
+		"dropped": [
+			[ "", "" ],
+			[ "  ", " " ]
+		]
+	}
+}
