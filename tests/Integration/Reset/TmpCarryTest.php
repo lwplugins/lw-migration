@@ -89,7 +89,7 @@ final class TmpCarryTest extends DatabaseTestCase {
 	}
 
 	public function test_every_row_of_ours_survives(): void {
-		$names = array_merge( Options::all(), [ Options::SCHEDULE_LOG_PREFIX . 'abcd1234' ] );
+		$names = array_merge( array_diff( Options::all(), Options::NOT_CARRIED ), [ Options::SCHEDULE_LOG_PREFIX . 'abcd1234' ] );
 		$this->exec( 'DELETE FROM wp_options WHERE option_name LIKE ' . "'lw\\_migration\\_%'" );
 		foreach ( $names as $name ) {
 			$this->exec( "INSERT INTO wp_options (option_name, option_value, autoload) VALUES ('{$name}', 'v-{$name}', 'off')" );

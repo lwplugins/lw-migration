@@ -104,7 +104,11 @@ jobs:
       - name: Install dependencies
         run: composer install --no-progress --prefer-dist
 
+      # The runner's /tmp is a system folder the backups folder rules refuse;
+      # the tests make their folders in the runner's own temp folder instead.
       - name: Run unit and WordPress tests
+        env:
+          TMPDIR: ${{ runner.temp }}
         run: composer test
 
   integration:
@@ -135,4 +139,5 @@ jobs:
       - name: Run integration tests
         env:
           LWM_DB_IMAGE: ${{ matrix.db }}
+          TMPDIR: ${{ runner.temp }}
         run: bash bin/test-db.sh
