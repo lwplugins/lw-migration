@@ -4,7 +4,7 @@ Tags: backup, migration, restore, clone, wpress
 Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,7 +15,7 @@ Lightweight backup, restore and migration for WordPress, compatible with .wpress
 LW Migration backs up, restores and moves WordPress sites. It reads and writes archives in the .wpress archive format, so existing .wpress backups can be restored too. No upsell, no tracking, no external service of ours: everything runs on your own sites, and a backup leaves the server only when you send it somewhere (another site of yours or a cloud destination you add).
 
 * **Back up** the whole site (database, media, plugins, themes, must-use plugins) into one archive. Media, themes, plugins, must-use plugins, the cache folder, spam comments, post revisions, chosen folders and tables or the whole database can be left out. Optional gzip or bzip2 compression, an optional password, and search-and-replace pairs for the exported database.
-* **Restore or move** from a file uploaded in the browser, an http(s) address or a backup already on the server. You see a summary before anything is written; addresses, paths and e-mail domains are rewritten for the new site, serialized data included; the current database is backed up first by default.
+* **Restore or move** from a file uploaded in the browser, an http(s) address or a backup already on the server. You see a summary before anything is written; addresses and paths are rewritten for the new site, serialized data included (e-mail domains too, when switched on under Advanced); the current database is backed up first by default.
 * **Backups:** download, restore, label, browse the files inside and delete; old backups are removed by number, total size or age, never the newest one or the ones taken before a restore or a reset.
 * **Scheduled backups:** up to 20 schedules, hourly to monthly in the site's time zone, each with its own retention, a run log and e-mail notifications. A server cron can drive them: `wp lw-migration schedule run --due`.
 * **Cloud destinations:** upload backups to Amazon S3 or S3-compatible storage, Google Drive, Dropbox, OneDrive, WebDAV, FTP/FTPS or SFTP from a schedule, the command line or the backups list, with retention per destination; restore, download or delete the backups there.
@@ -210,6 +210,12 @@ Scaleway Object Storage (Scaleway SAS):
 * Privacy policy: https://www.scaleway.com/en/privacy-policy/
 
 == Changelog ==
+
+= 1.0.2 =
+* Change: The Backup section shows "Calculating…" instead of a changing total while the sizes are counted.
+* Change: The overview's second backup button is called "Custom backup".
+* Change: The Settings page shows where the default backups folder is and says when notification e-mails are sent.
+* Change: Backups made from the admin keep the e-mail addresses by default; replacing them can be switched on under Advanced.
 
 = 1.0.1 =
 * Fix: Backups no longer stop on hosts that disable PHP's link() or ignore_user_abort() function; files are copied instead.

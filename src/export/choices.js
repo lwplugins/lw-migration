@@ -59,7 +59,8 @@ export const advancedCount = ( o ) =>
 		filled( o.excludeFiles ),
 		filled( o.excludeTables ),
 		filled( o.includeTables ),
-		Boolean( o.noEmailReplace ),
+		// Kept by default: replacing the addresses is the change.
+		! o.noEmailReplace,
 	].filter( Boolean ).length;
 
 /**

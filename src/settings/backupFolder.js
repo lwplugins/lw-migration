@@ -80,9 +80,13 @@ export const movingTarget = ( moving ) =>
 
 /**
  * @param {string} folder A folder as the server shows it ('' = the default one).
- * @return {string} How it is named; the default folder's path is never shown.
+ * @return {string} How it is named; the random end of the default folder's
+ *                  name is never shown (it keeps the folder unguessable).
  */
 export const targetLabel = ( folder ) =>
 	'' === folder
-		? __( 'Default: a protected folder inside wp-content', 'lw-migration' )
+		? __(
+				'Default: wp-content/lw-migration-…/backups (a protected folder whose name ends in random characters)',
+				'lw-migration'
+			)
 		: folder;

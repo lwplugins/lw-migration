@@ -151,7 +151,7 @@ export default function AdvancedOptions( {
 							'lw-migration'
 						) }
 						help={ __(
-							'When the backup is restored at another address, e-mail addresses at the old domain change with it. Switch it off to keep them.',
+							"When the backup is restored at another address, e-mail addresses at the old domain change with it. Off by default, so a copy on a test address keeps the admin's working address; switch it on when the site moves to a new domain for good.",
 							'lw-migration'
 						) }
 						checked={ ! options.noEmailReplace }

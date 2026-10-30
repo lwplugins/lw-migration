@@ -66,18 +66,20 @@ describe( 'CompositionBar', () => {
 		expect( html ).toContain( 'Plugins 198 MB' );
 	} );
 
-	it( 'says "at least" and "still counting" with the figures so far', () => {
+	it( 'shows no total while counting, only the parts counted so far', () => {
 		const html = bar( withoutFiles( { complete: false } ) );
-		expect( html ).toContain( 'at least 212 MB' );
-		expect( html ).toContain( 'Still counting…' );
+		expect( html ).toContain( 'Calculating…' );
+		expect( html ).not.toContain( 'at least 212 MB' );
+		expect( html ).not.toContain( 'goes into the backup' );
+		expect( html ).toContain( 'Database 212 MB' );
 		expect( html ).toContain( 'Media library counting…' );
 		expect( html ).toContain( 'aria-busy="true"' );
 	} );
 
 	it( 'gives a first measuring growing file sizes as lower bounds', () => {
 		const html = bar( firstWalk() );
-		expect( html ).toContain( 'at least 1.7 GB' );
-		expect( html ).toContain( 'Still counting…' );
+		expect( html ).toContain( 'Calculating…' );
+		expect( html ).not.toContain( 'at least 1.7 GB' );
 		expect( html ).toContain( 'Media library at least 1.1 GB' );
 		expect( html ).toContain( 'Plugins at least 286 MB' );
 		// The database is sized in one go: its figure is final.

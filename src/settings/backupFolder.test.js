@@ -147,9 +147,9 @@ describe( 'actionsFor', () => {
 } );
 
 describe( 'targetLabel', () => {
-	it( 'names the default folder without its path', () => {
+	it( 'names the default folder without the random end of its name', () => {
 		expect( targetLabel( '' ) ).toBe(
-			'Default: a protected folder inside wp-content'
+			'Default: wp-content/lw-migration-…/backups (a protected folder whose name ends in random characters)'
 		);
 		expect( targetLabel( '/srv/backups' ) ).toBe( '/srv/backups' );
 	} );

@@ -824,7 +824,8 @@ test.describe( 'schedules', () => {
 } );
 
 test.describe( 'backups folder', () => {
-	const DEFAULT_TEXT = 'Default: a protected folder inside wp-content';
+	const DEFAULT_TEXT =
+		'Default: wp-content/lw-migration-…/backups (a protected folder whose name ends in random characters)';
 	const outside = () => realpathSync( process.env.LWM_UI_OUTSIDE );
 	// The plugin's own storage folder (random name): never in a page or a REST body.
 	const storageName = () => basename( dirname( backupsDir( SITE ) ) );

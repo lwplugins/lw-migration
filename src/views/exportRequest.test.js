@@ -167,9 +167,12 @@ describe( 'toRequest', () => {
 				.filter( ( key ) => ! NETWORK_ONLY.includes( key ) )
 				.sort()
 		);
-		// Every part goes in by default except the cache folders.
+		// Every part goes in by default except the cache folders, and the
+		// e-mail addresses are kept.
 		FLAG_KEYS.forEach( ( key ) =>
-			expect( options[ key ] ).toBe( 'noCache' === key )
+			expect( options[ key ] ).toBe(
+				[ 'noCache', 'noEmailReplace' ].includes( key )
+			)
 		);
 		expect( options.encrypt ).toBe( false );
 		expect( options.compression ).toBe( '' );

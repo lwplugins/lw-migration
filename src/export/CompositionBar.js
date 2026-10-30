@@ -54,6 +54,21 @@ function legendValue( s, status ) {
 }
 
 /**
+ * The total once counting has ended ("at least" when a part is missing).
+ *
+ * @param {Object} comp composition() result.
+ * @return {string} Text.
+ */
+const totalText = ( comp ) =>
+	comp.missing
+		? sprintf(
+				/* translators: %s: size counted so far, e.g. 1.2 GB. */
+				__( 'at least %s', 'lw-migration' ),
+				formatBytes( comp.total )
+			)
+		: formatBytes( comp.total );
+
+/**
  * The line beside the total: how far the figures can be trusted.
  *
  * @param {string} status estimateStatus().
@@ -68,7 +83,10 @@ function statusText( status, comp ) {
 		);
 	}
 	if ( 'counting' === status ) {
-		return __( 'Still counting…', 'lw-migration' );
+		return __(
+			'The total follows when every part is counted; the parts counted so far are below.',
+			'lw-migration'
+		);
 	}
 	return comp.failed
 		? __( 'Approximate; some parts could not be counted.', 'lw-migration' )
@@ -204,16 +222,15 @@ export default function CompositionBar( {
 			aria-busy={ 'counting' === status ? true : undefined }
 		>
 			<div className="lw-composition__head" id="lw-composition-head">
+				{ /* No total while counting: a figure that changes a few seconds later reads as a wrong one. */ }
 				<span className="lw-composition__total">
-					{ comp.missing
-						? sprintf(
-								/* translators: %s: size counted so far, e.g. 1.2 GB. */
-								__( 'at least %s', 'lw-migration' ),
-								formatBytes( comp.total )
-							)
-						: formatBytes( comp.total ) }
+					{ 'counting' === status
+						? __( 'Calculating…', 'lw-migration' )
+						: totalText( comp ) }
 				</span>
-				<span className="lw-composition__lead">{ lead }</span>
+				{ 'counting' !== status && (
+					<span className="lw-composition__lead">{ lead }</span>
+				) }
 				<span className="lw-composition__status">
 					{ statusText( status, comp ) }
 				</span>

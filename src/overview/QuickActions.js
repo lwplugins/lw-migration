@@ -214,7 +214,7 @@ function BackupNow( { busy, network, onStart } ) {
 					variant="secondary"
 					href="#export"
 				>
-					{ __( 'Backup settings', 'lw-migration' ) }
+					{ __( 'Custom backup', 'lw-migration' ) }
 				</Button>
 			</div>
 		</Action>

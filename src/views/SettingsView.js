@@ -66,7 +66,7 @@ const NotificationsSection = ( { children } ) => (
 	<Section
 		title={ __( 'E-mail notifications', 'lw-migration' ) }
 		description={ __(
-			'Scheduled backups send their e-mails here, unless a schedule has its own address.',
+			'Scheduled backups send their e-mails here, unless a schedule has its own address. When a schedule mails (on failure, on success or always) is set on the schedule itself; backups started by hand send no e-mail.',
 			'lw-migration'
 		) }
 	>

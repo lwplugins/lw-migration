@@ -31,12 +31,15 @@ export const FLAG_KEYS = [
 
 /**
  * Form state; `compression` 'none' stands for the server's ''. The web forms
- * leave the cache folders out by default (they are not needed for a restore);
- * the CLI keeps its own default (everything in).
+ * leave the cache folders out by default (they are not needed for a restore)
+ * and keep the e-mail addresses (a copy at a test address would otherwise
+ * move the admin's address to a domain that receives no mail); the CLI keeps
+ * its own defaults (everything in, addresses replaced).
  */
 export const DEFAULTS = {
 	...Object.fromEntries( FLAG_KEYS.map( ( key ) => [ key, false ] ) ),
 	noCache: true,
+	noEmailReplace: true,
 	compression: 'none',
 	encrypt: false,
 	excludeFiles: '',

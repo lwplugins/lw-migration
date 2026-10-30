@@ -72,7 +72,7 @@ describe( 'advancedCount', () => {
 					excludeFiles: 'uploads/videos',
 					excludeTables: 'wp_logs',
 					includeTables: ' ',
-					noEmailReplace: true,
+					noEmailReplace: false,
 				} )
 			)
 		).toBe( 4 );

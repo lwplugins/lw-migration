@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2] - 2026-10-30
+
+### Changed
+- The Backup section shows "Calculating…" instead of a total while the sizes are still being counted, so the figure no longer changes a few seconds after the page opens.
+- The overview's second backup button is called "Custom backup", as it opens the backup options.
+- The Settings page shows where the default backups folder is (the random end of its name stays hidden) and says when notification e-mails are sent.
+- Backups made from the admin keep the e-mail addresses by default, so a copy restored at a test address keeps the admin's working address. Replacing them can be switched on under Advanced; the command line keeps replacing them by default.
+
 ## [1.0.1] - 2026-10-29
 
 ### Fixed
