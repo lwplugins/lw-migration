@@ -11,6 +11,7 @@ import { addQueryArgs } from '@wordpress/url';
 import { NAMESPACE } from './boot';
 import { headRefusal } from './download';
 import { withRetry } from './errors';
+import { createSliceSender } from './uploadSlice';
 
 // The message helper lives with the error kinds (unit-tested there).
 export { errorMessage } from './errors';
@@ -111,6 +112,9 @@ export async function request( options, nonceRetried = false ) {
 	};
 }
 
+// A slice as a file part; the raw body only where the server takes no uploads.
+const sendSlice = createSliceSender( request );
+
 export const api = {
 	// The home page in one read (Rest\OverviewApi, docs/react-admin-api.md).
 	overview: () => request( { path: path( '/overview' ) } ),
@@ -145,13 +149,11 @@ export const api = {
 	upload: ( id, offset, blob, signal ) =>
 		withRetry(
 			() =>
-				request( {
-					path: path( `/jobs/${ id }/upload`, { offset } ),
-					method: 'POST',
-					body: blob,
-					headers: { 'Content-Type': 'application/octet-stream' },
-					signal,
-				} ),
+				sendSlice(
+					path( `/jobs/${ id }/upload`, { offset } ),
+					blob,
+					signal
+				),
 			signal
 		),
 

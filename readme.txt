@@ -212,6 +212,7 @@ Scaleway Object Storage (Scaleway SAS):
 == Changelog ==
 
 = 1.0.2 =
+* Fix: Uploading a backup for restore no longer stops with error 406 on hosts whose firewall refuses raw binary uploads.
 * Change: The Backup section shows "Calculating…" instead of a changing total while the sizes are counted.
 * Change: The overview's second backup button is called "Custom backup".
 * Change: The Settings page shows where the default backups folder is and says when notification e-mails are sent.

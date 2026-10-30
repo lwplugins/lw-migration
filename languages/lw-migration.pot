@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-30T06:11:55+00:00\n"
+"POT-Creation-Date: 2026-10-30T18:31:50+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: lw-migration\n"
@@ -3469,6 +3469,7 @@ msgid "Start a backup or a restore."
 msgstr ""
 
 #: includes/Rest/JobsApi.php:224
+#: includes/Rest/UploadSlice.php:52
 msgid "This part of the upload is too large for the server."
 msgstr ""
 
@@ -3698,11 +3699,20 @@ msgstr ""
 msgid "This transfer link does not exist (any more)."
 msgstr ""
 
+#: includes/Rest/UploadSlice.php:38
+msgid "This server does not take file uploads."
+msgstr ""
+
+#: includes/Rest/UploadSlice.php:56
+#: includes/Rest/UploadSlice.php:61
+msgid "This part of the upload did not arrive. Try again."
+msgstr ""
+
 #: includes/Rest/WebDriver.php:144
 msgid "Another backup or restore ran on this site after this one stopped. Start this one again."
 msgstr ""
 
-#: includes/Rest/WebLimits.php:166
+#: includes/Rest/WebLimits.php:171
 msgid "The server of this address cannot send the file in parts, and the file is too large (or of unknown size) to download in one browser request. Download the file and upload it here, or run: wp lw-migration import <address>"
 msgstr ""
 

@@ -48,6 +48,12 @@ final class WebLimitsTest extends MonkeyTestCase {
 		$this->assertSame( WebLimits::MAX_CHUNK, WebLimits::chunkFor( null, 67108864 ) );
 	}
 
+	public function test_a_chunk_fits_upload_max_filesize_too(): void {
+		$this->assertSame( 2097152, WebLimits::chunkFor( null, 67108864, 2097152 ), 'A slice is sent as a file part: upload_max_filesize limits it.' );
+		$this->assertSame( 2097152 - 65536, WebLimits::chunkFor( null, 2097152, 8388608 ) );
+		$this->assertSame( WebLimits::MAX_CHUNK, WebLimits::chunkFor( null, 0, 0 ) );
+	}
+
 	public function test_a_chunk_takes_a_quarter_of_the_memory_limit_above_a_fixed_baseline(): void {
 		$mib = 1048576;
 		$this->assertSame( WebLimits::MAX_CHUNK, WebLimits::chunkFor( 256 * $mib, 0 ) );

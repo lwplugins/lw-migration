@@ -98,11 +98,11 @@ final class Routes {
 	}
 
 	/**
-	 * @param \WP_REST_Request $request Request (raw body, ?offset=).
+	 * @param \WP_REST_Request $request Request (the slice as a file part or the raw body, ?offset=).
 	 * @return \WP_REST_Response|\WP_Error
 	 */
 	public static function uploadChunk( \WP_REST_Request $request ) {
-		return self::job( static fn( JobsApi $api ): Job => $api->upload( self::notDrivenElsewhere( self::id( $request ) ), JobInput::wholeNumber( $request->get_param( 'offset' ), 'offset' ), (string) $request->get_body() ) );
+		return self::job( static fn( JobsApi $api ): Job => $api->upload( self::notDrivenElsewhere( self::id( $request ) ), JobInput::wholeNumber( $request->get_param( 'offset' ), 'offset' ), UploadSlice::from( $request ) ) );
 	}
 
 	/**

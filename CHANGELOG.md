@@ -2,6 +2,9 @@
 
 ## [1.0.2] - 2026-10-30
 
+### Fixed
+- Uploading a backup for restore no longer stops with "The server answered with error 406" on hosts whose firewall refuses raw binary request bodies: each part is now sent as an ordinary file upload, and the part size also stays within the server's upload_max_filesize.
+
 ### Changed
 - The Backup section shows "Calculating…" instead of a total while the sizes are still being counted, so the figure no longer changes a few seconds after the page opens.
 - The overview's second backup button is called "Custom backup", as it opens the backup options.

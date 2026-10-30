@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/lw-migration\n"
-"POT-Creation-Date: 2026-10-30T06:11:22+00:00\n"
+"POT-Creation-Date: 2026-10-30T18:31:50+00:00\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
 #. Plugin Name of the plugin
@@ -4450,7 +4450,7 @@ msgstr "Nincs elég szabad lemezterület ehhez a feltöltéshez (%s)."
 msgid "Start a backup or a restore."
 msgstr "Indíts egy mentést vagy egy visszaállítást."
 
-#: includes/Rest/JobsApi.php:224
+#: includes/Rest/JobsApi.php:224 includes/Rest/UploadSlice.php:52
 msgid "This part of the upload is too large for the server."
 msgstr "A feltöltés ezen része túl nagy a szervernek."
 
@@ -4747,6 +4747,14 @@ msgstr ""
 msgid "This transfer link does not exist (any more)."
 msgstr "Ez az átviteli link (már) nem létezik."
 
+#: includes/Rest/UploadSlice.php:38
+msgid "This server does not take file uploads."
+msgstr "Ez a szerver nem fogad fájlfeltöltést."
+
+#: includes/Rest/UploadSlice.php:56 includes/Rest/UploadSlice.php:61
+msgid "This part of the upload did not arrive. Try again."
+msgstr "A feltöltés ezen része nem érkezett meg. Próbáld újra."
+
 #: includes/Rest/WebDriver.php:144
 msgid ""
 "Another backup or restore ran on this site after this one stopped. Start "
@@ -4755,7 +4763,7 @@ msgstr ""
 "Miután ez leállt, egy másik mentés vagy visszaállítás futott az oldalon. "
 "Indítsd újra ezt."
 
-#: includes/Rest/WebLimits.php:166
+#: includes/Rest/WebLimits.php:171
 msgid ""
 "The server of this address cannot send the file in parts, and the file is "
 "too large (or of unknown size) to download in one browser request. Download "

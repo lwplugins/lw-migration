@@ -95,25 +95,30 @@ final class WebLimits {
 	 * and the upload route takes chunks up to it.
 	 */
 	public static function chunkBytes(): int {
-		return self::chunkFor( Memory::bytes( (string) ini_get( 'memory_limit' ) ), (int) wp_convert_hr_to_bytes( (string) ini_get( 'post_max_size' ) ) );
+		return self::chunkFor( Memory::bytes( (string) ini_get( 'memory_limit' ) ), (int) wp_convert_hr_to_bytes( (string) ini_get( 'post_max_size' ) ), (int) wp_convert_hr_to_bytes( (string) ini_get( 'upload_max_filesize' ) ) );
 	}
 
 	/**
 	 * A quarter of the memory limit above a fixed baseline (never the live
 	 * memory use, which differs from request to request), clamped to
 	 * MIN_CHUNK..MAX_CHUNK and always inside post_max_size: a larger body is
-	 * dropped by PHP before any code runs.
+	 * dropped by PHP before any code runs. The page sends a slice as a file
+	 * part (UploadSlice), so upload_max_filesize limits it too.
 	 *
 	 * @param int|null $memoryLimit memory_limit in bytes (null: no limit).
 	 * @param int      $postMax     post_max_size in bytes (0 or less: no limit).
+	 * @param int      $uploadMax   upload_max_filesize in bytes (0 or less: no limit).
 	 */
-	public static function chunkFor( ?int $memoryLimit, int $postMax ): int {
+	public static function chunkFor( ?int $memoryLimit, int $postMax, int $uploadMax = 0 ): int {
 		$chunk = self::MAX_CHUNK;
 		if ( null !== $memoryLimit ) {
 			$chunk = min( $chunk, max( self::MIN_CHUNK, intdiv( $memoryLimit - self::MEMORY_BASELINE, self::MEMORY_SHARE ) ) );
 		}
 		if ( $postMax > 0 ) {
 			$chunk = min( $chunk, $postMax - self::BODY_MARGIN );
+		}
+		if ( $uploadMax > 0 ) {
+			$chunk = min( $chunk, $uploadMax );
 		}
 
 		return max( 1, $chunk );
