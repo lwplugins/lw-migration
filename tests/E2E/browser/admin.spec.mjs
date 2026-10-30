@@ -446,6 +446,26 @@ test( 'a start refused with a logout shows the login link', async ( {
 	expect( lockState() ).toBe( 'free' );
 } );
 
+/**
+ * The size of the slice in an upload request: its multipart file part (a
+ * hosting firewall refuses a raw octet-stream body), else the whole body.
+ *
+ * @param {import('@playwright/test').Request} request Upload request.
+ * @return {number} Bytes.
+ */
+function filePartBytes( request ) {
+	const body = request.postDataBuffer() || Buffer.alloc( 0 );
+	const boundary = /boundary=([^;]+)/.exec(
+		request.headers()[ 'content-type' ] || ''
+	)?.[ 1 ];
+	if ( ! boundary ) {
+		return body.length;
+	}
+	const start = body.indexOf( '\r\n\r\n' ) + 4;
+	const end = body.lastIndexOf( `\r\n--${ boundary }` );
+	return end - start;
+}
+
 test( 'an upload refused by the web server with a non-JSON 413 goes on in smaller slices', async ( {
 	page,
 } ) => {
@@ -454,7 +474,8 @@ test( 'an upload refused by the web server with a non-JSON 413 goes on in smalle
 		const url = new URL( route.request().url() );
 		slices.push( {
 			offset: Number( url.searchParams.get( 'offset' ) ),
-			bytes: route.request().postDataBuffer()?.length || 0,
+			type: route.request().headers()[ 'content-type' ] || '',
+			bytes: filePartBytes( route.request() ),
 		} );
 		if ( 1 === slices.length ) {
 			await route.fulfill( {
@@ -479,6 +500,9 @@ test( 'an upload refused by the web server with a non-JSON 413 goes on in smalle
 
 	const total = statSync( made.file ).size;
 	expect( slices.length ).toBeGreaterThan( 1 );
+	slices.forEach( ( slice ) =>
+		expect( slice.type ).toMatch( /^multipart\/form-data; boundary=/ )
+	);
 	expect( slices[ 1 ].offset ).toBe( 0 );
 	expect( slices[ 1 ].bytes ).toBeLessThan( slices[ 0 ].bytes );
 	expect( slices[ 1 ].bytes ).toBeLessThanOrEqual(
