@@ -519,6 +519,34 @@ test( 'an upload refused by the web server with a non-JSON 413 goes on in smalle
 	expect( lockState() ).toBe( 'free' );
 } );
 
+test( 'an upload a firewall refuses with 406 can still be cancelled', async ( {
+	page,
+} ) => {
+	await page.route( ROUTE.upload, ( route ) =>
+		route.fulfill( {
+			status: 406,
+			contentType: 'text/html',
+			body: '<html><head><title>406 Not Acceptable</title></head><body><h1>Not Acceptable</h1></body></html>',
+		} )
+	);
+	await page.goto( screen( 'import' ) );
+	await page.getByRole( 'button', { name: /^From a file/ } ).click();
+	await page.locator( 'input[type="file"]' ).setInputFiles( made.file );
+	await page.getByRole( 'button', { name: 'Continue to the check' } ).click();
+	await expect(
+		page
+			.locator( '.lw-job .components-notice__content' )
+			.filter( { hasText: 'The server answered with error 406.' } )
+	).toBeVisible( { timeout: 60000 } );
+
+	await page.getByRole( 'button', { name: 'Cancel', exact: true } ).click();
+	await page.getByRole( 'button', { name: 'Cancel the job' } ).click();
+	await expect(
+		page.getByRole( 'heading', { name: 'Restore cancelled' } )
+	).toBeVisible();
+	expect( lockState() ).toBe( 'free' );
+} );
+
 test.describe( 'cancelling a running backup', () => {
 	test.beforeAll( () => {
 		addSlowFixture( 200 );
