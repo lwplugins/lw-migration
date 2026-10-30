@@ -539,7 +539,12 @@ test( 'an upload a firewall refuses with 406 can still be cancelled', async ( {
 			.filter( { hasText: 'The server answered with error 406.' } )
 	).toBeVisible( { timeout: 60000 } );
 
-	await page.getByRole( 'button', { name: 'Cancel', exact: true } ).click();
+	// The way out is in the upload card itself, not only in the footer below it.
+	await page
+		.locator( '.lw-admin-section' )
+		.filter( { hasText: 'Choose the file again' } )
+		.getByRole( 'button', { name: 'Cancel the restore' } )
+		.click();
 	await page.getByRole( 'button', { name: 'Cancel the job' } ).click();
 	await expect(
 		page.getByRole( 'heading', { name: 'Restore cancelled' } )

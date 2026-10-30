@@ -4,6 +4,7 @@
 
 ### Fixed
 - Uploading a backup for restore no longer stops with "The server answered with error 406" on hosts whose firewall refuses raw binary request bodies: each part is now sent as an ordinary file upload, and the part size also stays within the server's upload_max_filesize.
+- A stopped upload can be cancelled from its own card ("Cancel the restore"); the job's Cancel button was below the fold, behind the drop zone.
 
 ### Changed
 - The Backup section shows "Calculating…" instead of a total while the sizes are still being counted, so the figure no longer changes a few seconds after the page opens.

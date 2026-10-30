@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/lw-migration\n"
-"POT-Creation-Date: 2026-10-30T18:31:50+00:00\n"
+"POT-Creation-Date: 2026-10-30T20:08:04+00:00\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
 #. Plugin Name of the plugin
@@ -8561,7 +8561,7 @@ msgid ""
 "it later."
 msgstr "A feladat innen halad: ha bezárod, megáll, és később folytathatod."
 
-#: build/index.js:39 build/index.js:68
+#: build/index.js:39 build/index.js:68 build/index.js:69
 msgid "Cancelling…"
 msgstr "Megszakítás folyamatban…"
 
@@ -9051,7 +9051,7 @@ msgstr "Add meg a jelszót, amit a mentés készítésekor állítottak be."
 msgid "Continue"
 msgstr "Folytatás"
 
-#: build/index.js:68
+#: build/index.js:68 build/index.js:69
 msgid "Cancel the restore"
 msgstr "Visszaállítás megszakítása"
 

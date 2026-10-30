@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { Notice } from '@wordpress/components';
+import { Button, Notice } from '@wordpress/components';
 import { __, sprintf } from '@wordpress/i18n';
 
 /**
@@ -13,13 +13,23 @@ import { formatBytes } from '../data/format';
 
 /**
  * After a reload (or a failed slice) the upload needs the same file again.
+ * The way out sits in the card too: the footer's Cancel is below the fold
+ * behind the drop zone, where a stuck upload's user does not find it.
  *
  * @param {Object}               props
- * @param {Object}               props.expected Job source { name, size }.
- * @param {string}               props.error    Why the last attempt stopped.
- * @param {(file: File) => void} props.onFile   Called with the chosen file.
+ * @param {Object}               props.expected   Job source { name, size }.
+ * @param {string}               props.error      Why the last attempt stopped.
+ * @param {(file: File) => void} props.onFile     Called with the chosen file.
+ * @param {() => void}           props.onCancel   Ask to cancel the job.
+ * @param {boolean}              props.cancelling The cancel is under way.
  */
-export default function UploadPrompt( { expected, error, onFile } ) {
+export default function UploadPrompt( {
+	expected,
+	error,
+	onFile,
+	onCancel,
+	cancelling,
+} ) {
 	return (
 		<Section
 			title={ __( 'Choose the file again', 'lw-migration' ) }
@@ -39,6 +49,19 @@ export default function UploadPrompt( { expected, error, onFile } ) {
 					{ error }
 				</Notice>
 			) }
+			<div className="lw-actions">
+				<Button
+					__next40pxDefaultSize
+					variant="tertiary"
+					disabled={ cancelling }
+					accessibleWhenDisabled
+					onClick={ onCancel }
+				>
+					{ cancelling
+						? __( 'Cancelling…', 'lw-migration' )
+						: __( 'Cancel the restore', 'lw-migration' ) }
+				</Button>
+			</div>
 		</Section>
 	);
 }

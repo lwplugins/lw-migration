@@ -283,6 +283,8 @@ function DriverScreen( {
 						expected={ job.source }
 						error={ upload.error }
 						onFile={ upload.chooseFile }
+						onCancel={ confirm.ask }
+						cancelling={ cancelling }
 					/>
 				) }
 				{ finished && <JobResult job={ job } onClose={ onClose } /> }
