@@ -17,7 +17,7 @@
         "brain/monkey": "^2.6",
         "php-stubs/wp-cli-stubs": "dev-master#335d4890308f9fbb3427c56412d30f157d21f697",
         "phpcompatibility/phpcompatibility-wp": "^2.1",
-        "phpunit/phpunit": "^10.0",
+        "phpunit/phpunit": "^13.4",
         "squizlabs/php_codesniffer": "^3.0",
         "szepeviktor/phpstan-wordpress": "^2.0",
         "wp-coding-standards/wpcs": "^3.0"
